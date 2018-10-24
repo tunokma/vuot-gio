@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Giảng viên</title>
+        <meta name="description" content="spring-boot thymeleaf | giangVien-form ">
+            <div th:replace="fragments/header :: header-css"></div>
+    </head>
+    <body>
+        <div th:replace="fragments/header-admin :: header-admin"></div>
+        <div class="tab-content">
+            <div class="tab-pane active" id="compose">
+                <div class="container">
+                    <div class="content-container clearfix">
+                        <div class="row">
+                            <h3 style="color: blue;" class="text-center">Thêm/sửa giảng viên</h3>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-3"></div>
+                            <div class="col-sm-6">
+                                <div th:if="${saveUser eq 'exist-name'}" class="alert alert-danger alert-dismissable">
+                                    <button type="button" class="close" data-dismiss="alert"
+                                            aria-hidden="true">&times;</button>
+                                    <strong>Lỗi!</strong> Tên đăng nhập đã được sử dụng !!!
+                                </div>
+                                <div th:if="${saveUser eq 'valid-pass'}" class="alert alert-danger alert-dismissable">
+                                    <button type="button" class="close" data-dismiss="alert"
+                                            aria-hidden="true">&times;</button>
+                                    <strong>Lỗi!</strong> Mật khẩu nhập lại không đúng !!!
+                                </div>
+                                <form action="#" th:action="@{/giangVien/save}" th:object="${giangVienVM}"
+                                      method="POST" >
+                                    <input type="hidden" th:field="*{id}" />
+                                    <div class="form-group">
+                                        <label>Họ tên</label> 
+                                        <input type="text" class="form-control"
+                                               th:field="*{hoTen}" placeholder=" " />   
+                                    </div>
+
+                                    <div th:if="${msg eq 'create'}">
+                                        <div class="form-group">
+                                            <label>Tên đăng nhập</label> 
+                                            <input type="text" class="form-control"
+                                                   th:field="*{username}" placeholder=" " required="required"/>  
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Mật khẩu</label> 
+                                            <input type="password" class="form-control"
+                                                   th:field="*{password}" placeholder=" " required="required"/>  
+                                        </div>
+                                        <div class="form-group ">
+                                            <label>Nhập lại mật khẩu</label> 
+                                            <input th:field="*{password_2}" type="password"
+                                                   class="form-control" id="confirm_password"
+                                                   placeholder=" " required="required"/>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label>Năm sinh</label> 
+                                        <input type="text" class="form-control"
+                                               th:field="*{namSinh}" placeholder=" "/>   
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label>Chức vụ</label> 
+                                        <input type="text" class="form-control"
+                                               th:field="*{chucVu}" placeholder=" "/>   
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label>Lương thực nhận</label> 
+                                        <input type="number" class="form-control"
+                                               th:field="*{luongThucNhan}" placeholder=" "/>   
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label>Nâng cao</label> 
+                                        <select th:if="${giangVienVM.dinhMucGG==null}" th:field="*{dinhMucGG}" class="form-control">
+                                            <option value=""> --Chọn-- </option>
+                                            <option th:each="entry : ${soTietDMMap.entrySet()}"
+                                                    th:value="${entry.key}"
+                                                    th:utext="${entry.value}">
+                                            </option>
+                                        </select> 
+                                        <select th:unless="${giangVienVM.dinhMucGG==null}" th:field="*{dinhMucGG}" class="form-control">
+                                            <option th:each="entry : ${soTietDMMap.entrySet()}"
+                                                    th:value="${entry.key}"
+                                                    th:utext="${entry.value}"
+                                                    th:selected="${giangVien.dinhMucGG==entry.key}">
+                                            </option>
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label>Học hàm</label> 
+                                        <select th:if="${giangVienVM.hocHam==null}" th:field="*{hocHam}" class="form-control">
+                                            <option value=""> --Chọn-- </option>
+                                            <option th:each="entry : ${hocHamMap.entrySet()}"
+                                                    th:value="${entry.key}"
+                                                    th:utext="${entry.value}">
+                                            </option>
+                                        </select> 
+                                        <select th:unless="${giangVienVM.hocHam==null}" th:field="*{hocHam}" class="form-control">
+                                            <option th:each="entry : ${hocHamMap.entrySet()}"
+                                                    th:value="${entry.key}"
+                                                    th:utext="${entry.value}"
+                                                    th:selected="${giangVien.hocHam==entry.key}">
+                                            </option>
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label>Bộ môn</label> 
+                                        <select th:if="${giangVienVM.idBoMon==null}" th:field="*{idBoMon}" class="form-control">
+                                            <option value=""> --Chọn-- </option>
+                                            <option th:each="entry : ${mapTenBoMon.entrySet()}"
+                                                    th:value="${entry.key}"
+                                                    th:utext="${entry.value}">
+                                            </option>
+                                        </select> 
+                                        <select th:unless="${giangVienVM.idBoMon==null}" th:field="*{idBoMon}" class="form-control">
+                                            <option th:each="entry : ${mapTenBoMon.entrySet()}"
+                                                    th:value="${entry.key}"
+                                                    th:utext="${entry.value}"
+                                                    th:selected="${giangVien.idBoMon==entry.key}">
+                                            </option>
+                                        </select> 
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label>Giảm trừ</label> 
+                                        <select th:if="${giangVienVM.giamTru==null}" th:field="*{giamTru}" class="form-control" multiple="multiple">
+                                            <option value=""> --Chọn-- </option>
+                                            <option th:each="entry : ${mapTenBoMon.entrySet()}"
+                                                    th:value="${entry.key}"
+                                                    th:utext="${entry.value}">
+                                            </option>
+                                        </select> 
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Lưu</button>
+                                </form>
+                            </div>
+                            <div class="col-sm-3"></div>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- /.container -->
+        </div>
+        <!--    <footer th:replace="layout :: footer"></footer>-->
+    </body>
+</html>

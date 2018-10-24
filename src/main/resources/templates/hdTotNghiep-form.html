@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Giảng viên</title>
+        <meta name="description" content="spring-boot thymeleaf | hdTotNghiep-form ">
+            <div th:replace="fragments/header :: header-css"></div>
+    </head>
+    <body>
+        <div th:replace="fragments/header-admin :: header-admin"></div>
+        <div class="tab-content">
+            <div class="tab-pane active" id="compose">
+                <div class="container">
+                    <div class="content-container clearfix">
+                        <div class="row">
+                            <h3 style="color: blue;" class="text-center">Thêm/sửa hướng dẫn đồ án tốt nghiệp</h3>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-3"></div>
+                            <div class="col-sm-6">
+                                <form action="#" th:action="@{/giangVien/{objectId}/statistic/hdTotNghiep/save(objectId=${objectId})}" th:object="${hdTotNghiep}"
+                                      method="POST" >
+                                    <input type="hidden" th:field="*{id}" />
+
+                                    <div class="form-group">
+                                        <label>Họ tên sinh viên</label> 
+                                        <input type="text" class="form-control"
+                                               th:field="*{tenSv}" placeholder=" " />   
+                                    </div>
+
+
+                                    <div class="form-group">
+                                        <label>Khóa đào tạo</label> 
+                                        <input type="text" class="form-control"
+                                               th:field="*{khoaDt}" placeholder=" "/>   
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label>Số người hướng dẫn</label> 
+                                        <input type="number" class="form-control"
+                                               th:field="*{soNguoitHd}" />   
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label>Số tiết quy đổi</label> 
+                                        <input type="number" class="form-control"
+                                               th:field="*{soTietQd}" />   
+                                    </div>
+
+                                    <button type="submit" class="btn btn-primary">Lưu</button>
+                                </form>
+                            </div>
+                            <div class="col-sm-3"></div>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- /.container -->
+        </div>
+        <!--    <footer th:replace="layout :: footer"></footer>-->
+    </body>
+</html>

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Quản lý khoa</title>
+        <meta name="description" content="spring-boot thymeleaf | khoa ">
+            <div th:replace="fragments/header :: header-css"></div>
+    </head>
+    <body>
+        <div th:replace="fragments/header-admin :: header-admin"></div>
+        <div class="tab-content">
+            <div class="tab-pane active" id="khoa">
+                <div class="container">
+                    <div class="content-container clearfix">
+                        <div class="row">
+                            <h3 class="text-center">Quản lý khoa</h3>
+                        </div>
+                        <div th:if="${success}"
+                             class="row alert alert-success alert-dismissible">
+                            <button type="button" class="close" data-dismiss="alert"
+                                    aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <span th:text="${success}"></span>
+                        </div>
+                        <div class="row">
+                            <a th:href="@{/khoa/create}" class="btn btn-success pull-left eBtn">
+                                <span class="glyphicon glyphicon-plus"></span> Thêm Khoa
+                            </a>
+                            <form class="form-inline pull-right" action="#"
+                                  th:action="@{/khoa/search}" method="GET">
+                                <div class="form-group">
+                                    <input type="text" class="form-control" name="s"
+                                           placeholder="Nhập tên khoa..." />
+                                </div>
+                                <button type="submit" class="btn btn-primary">Tìm kiếm</button>
+                            </form>
+                        </div>
+                        <span class="help-block"></span>
+                        <div class="row">
+                            <div class="panel panel-info">
+                                <div class="panel-body">
+                                    <table  class="table table-bordered  table-striped table-responsive">
+                                        <thead>
+                                            <tr class="btn-info">
+                                                <th class="text-center">STT</th>
+                                                <th class="text-center">Tên khoa</th>
+                                                <th class="text-center">Mô tả</th>
+                                                <th class="text-center">Sửa</th>
+                                                <th class="text-center">Xóa</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr th:if="${#lists.isEmpty(khoas)}" class="btn-default">
+                                                <td colspan="5" align="center">Không có thông tin hiển thị!!!</td>
+                                            </tr>
+                                            <tr th:each="khoa,iterStat : ${khoas}">
+                                                <td class="text-center" width='5%' th:text="${iterStat.count}"></td>
+                                                <td width='15%' th:text="${khoa.tenKhoa}"></td>
+                                                <td width='40%' th:text="${khoa.moTa}"></td>
+                                                <td class="text-center" width='5%'><a th:href="@{/khoa/{id}/edit(id=${khoa.id})}"><span
+                                                            class="glyphicon glyphicon-pencil"></span></a></td>
+                                                <td class="text-center" width='5%'><a data-toggle="modal" data-target="#modal-toTrash"
+                                                                                      th:attr="data-target='#modal-toTrash'+${khoa.id}">
+                                                        <span class="glyphicon glyphicon-trash" data-toggle="tooltip"
+                                                              data-placement="top" title="Xóa"></span></a></td>
+                                                <div class="modal modal-toTrash" th:id="modal-toTrash+${khoa.id}">
+                                                    <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <button type="button" class="close" data-dismiss="modal"
+                                                                        aria-hidden="true">×
+                                                                </button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <p class="error-text"><strong>Bạn chắc chắn muốn xóa này?</strong></p>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <a th:href="@{/khoa/{id}/delete(id=${khoa.id})}">
+                                                                    <span class="btn btn-danger" value="delete">Xóa</span></a>
+                                                                <button class="btn " data-dismiss="modal" aria-hidden="true">
+                                                                    Hủy
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>               
+
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--        <footer>
+            <div class="separator" th:replace="fragments/footer :: footer">&copy; 2018 Tuno</div>
+        </footer>-->
+        <script>
+            $('#modal-toTrash').on('show.bs.modal', function (e) {
+                $(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
+                $('#modal-toTrashHiddenId').val($(this).find('.btn-ok').attr('href'));
+            });
+
+            $('#modal-delete').on('show.bs.modal', function (e) {
+                $(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
+                $('#modal-deleteHiddenId').val($(this).find('.btn-ok').attr('href'));
+            });
+
+        </script>
+
+    </body>
+</html>

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Quản lý bộ môn</title>
+        <meta name="description" content="spring-boot thymeleaf | monHoc ">
+            <div th:replace="fragments/header :: header-css"></div>
+    </head>
+    <body>
+        <div th:replace="fragments/header-admin :: header-admin"></div>
+        <div class="tab-content">
+            <div class="tab-pane active" id="monHoc">
+                <div class="container">
+                    <div class="content-container clearfix">
+                        <div class="row">
+                            <h3 class="text-center">Quản lý môn học</h3>
+                        </div>
+                        <div th:if="${success}"
+                             class="row alert alert-success alert-dismissible">
+                            <button type="button" class="close" data-dismiss="alert"
+                                    aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <span th:text="${success}"></span>
+                        </div>
+                        <div class="row">
+                            <a th:href="@{/monHoc/create}" class="btn btn-success pull-left">
+                                <span class="glyphicon glyphicon-plus"></span> Thêm bộ môn
+                            </a>
+                            <form class="form-inline pull-right" action="#"
+                                  th:action="@{/monHoc/search}" method="GET">
+                                <div class="form-group">
+                                    <input type="text" class="form-control" name="search"
+                                           placeholder="Nhập tên bộ môn..." />
+                                </div>
+                                <button type="submit" class="btn btn-primary">Tìm kiếm</button>
+                            </form>
+                        </div>
+                        <span class="help-block"></span>
+                        <div class="row">
+                            <div class="panel panel-info">
+                                <div class="panel-body">
+                                    <table width='100px' class="table table-bordered table-hover table-striped table-responsive">
+                                        <thead>
+                                            <tr class="btn-info">
+                                                <th class="text-center">STT</th>
+                                                <th class="text-center">Tên môn học</th>
+                                                <th class="text-center">Tên bộ môn</th>
+                                                <th class="text-center">Mô tả</th>
+                                                <th class="text-center">Sửa</th>
+                                                <th class="text-center">Xóa</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr th:if="${#lists.isEmpty(monHocs)}" class="btn-default">
+                                                <td colspan="6" align="center">Không có thông tin hiển thị!!!</td>
+                                            </tr>
+                                            <tr th:each="monHoc,iterStat : ${monHocs}">
+                                                <td width='5%' th:text="${iterStat.count}"></td>
+                                                <td width='15%' th:text="${monHoc.tenMon}"></td>
+                                                <td width='15%' th:text="${monHoc.tenBoMon}"></td>
+                                                <td width='40%' th:text="${monHoc.moTa}"></td>
+                                                <td class="text-center" width='5%'><a th:href="@{/monHoc/{id}/edit(id=${monHoc.id})}"><span
+                                                            class="glyphicon glyphicon-pencil"></span></a></td>
+                                                <td class="text-center" width='5%'><a th:href="@{/monHoc/{id}/delete(id=${monHoc.id})}"><span
+                                                            class="glyphicon glyphicon-trash"></span></a></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <!--        <footer>
+                    <div class="separator" th:replace="fragments/footer :: footer">&copy; 2018 Tuno</div>
+                </footer>-->
+    </body>
+</html>

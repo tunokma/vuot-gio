@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Thống kê</title>
+        <meta name="description" content="spring-boot thymeleaf | thongKe ">
+            <div th:replace="fragments/header :: header-css"></div>
+    </head>
+    <body>
+        <div th:replace="fragments/header-admin :: header-admin"></div>
+        <div class="tab-content">
+            <div class="tab-pane active" id="thongKe">
+                <div class="container">
+                    <div class="content-container clearfix">
+                        <div class="row">
+                            <h2 class="text-center">Thống kê vượt giờ</h2>
+                            <div class="col-md-3"></div>
+                            <div class="col-md-6">
+
+                                <form  action="#" class=""
+                                       th:action="@{/thongKe/search}" method="GET">
+                                    <div class="row row-space">
+                                        <div class="col-md-2 text-right">
+                                            <label>Năm học</label>
+                                        </div>
+                                        <div class="col-md-4 col-form-control">
+                                            <select name="namHoc" class="form-control">
+                                                <option th:each="entry : ${namHocMap.entrySet()}"
+                                                        th:value="${entry.key}"
+                                                        th:utext="${entry.value}"
+                                                        th:selected="${namHocNay==entry.key}">
+                                                </option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-2 text-right">
+                                            <label>Khoa</label>
+                                        </div>
+                                        <div class="col-md-4 col-form-control">
+                                            <select name="khoa" class="form-control">
+                                                <option value=""> --Chọn-- </option>
+                                                <option th:each="entry : ${khoaMap.entrySet()}"
+                                                        th:value="${entry.key}"
+                                                        th:utext="${entry.value}">
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="float-right btn-send">
+                                        <button type="submit" class="btn btn-success btn-custom">Tìm kiếm</button>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="col-md-3"></div>
+                        </div>
+                        <span class="help-block"></span>
+                        <div class="row">
+                            <a th:href="@{/thongKe/baoCao}" class="btn btn-success pull-center">
+                                <span class="fa fa-file-excel-o"></span> Xuất excel
+                            </a>
+                        </div>
+                        <span class="help-block"></span>
+
+                        <div class="row">
+                            <div class="panel panel-info">
+                                <div class="panel-body">
+                                    <table class="table table-bordered  table-striped table-responsive">
+                                        <thead>
+                                            <tr class="btn-info ">
+                                                <th class="text-center" width="5%">TT</th>
+                                                <th class="text-center" >Họ tên giảng viên</th>
+                                                <th class="text-center" width="5%">Định mức giờ giảng</th>
+                                                <th class="text-center" width="5%">Giờ NCKH</th>
+                                                <th class="text-center" width="5%">Được giảm</th>
+                                                <th class="text-center" width="5%">Định mức phải giảng</th>
+                                                <th class="text-center" width="5%">Thực tế giảng dạy</th>
+                                                <th class="text-center" width="5%">Số tiết vượt</th>
+                                                <th class="text-center" width="10%">Mức TT chuẩn</th>
+                                                <th class="text-center" width="10%">Tổng tiền</th>
+                                                <th class="text-center" width="10%">Thuế</th>
+                                                <th class="text-center" width="10%">Thực lĩnh</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr th:if="${#lists.isEmpty(thongKes)}" class="btn-default">
+                                                <td colspan="12" align="center">Không có thông tin hiển thị!!!</td>
+                                            </tr>
+                                            <tr th:each="thongKe,iterStat : ${thongKes}">
+                                                <td class="text-center" th:text="${iterStat.count}"></td>
+                                                <td th:text="${thongKe.tenGV}"></td>
+                                                <td class="text-center" th:text="${thongKe.dinhMucGioGiang}"></td>
+                                                <td class="text-center" th:text="${thongKe.gioNCKH}"></td>
+                                                <td class="text-center" th:text="${thongKe.duocGiam}"></td>
+                                                <td class="text-center" th:text="${thongKe.dinhMucPhaiGiang}"></td>
+                                                <td class="text-center" th:text="${thongKe.caNam_Sum}"></td>
+                                                <td class="text-center" th:text="${thongKe.vuotDM_CaNam}"></td>
+                                                <td class="text-center" th:text="${thongKe.mucTTChuan}"></td>
+                                                <td class="text-center" th:text="${thongKe.thanhTien_Sum}"></td>
+                                                <td class="text-center" th:text="${thongKe.thue}"></td>
+                                                <td class="text-center" th:text="${thongKe.thucLinh}"></td>
+                                            </tr>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+        <!--        <footer>
+                    <div class="separator" th:replace="fragments/footer :: footer">&copy; 2016 Tuno</div>
+                </footer>-->
+        <script src="/webjars/jquery/3.3.1-1/jquery.min.js"></script>
+        <script src="/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js"></script>
+    </body>
+</html>

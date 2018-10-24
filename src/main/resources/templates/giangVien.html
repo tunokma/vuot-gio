@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Quản lý giảng viên</title>
+        <meta name="description" content="spring-boot thymeleaf | giangVien ">
+            <div th:replace="fragments/header :: header-css"></div>
+    </head>
+    <body>
+        <div th:replace="fragments/header-admin :: header-admin"></div>
+        <div class="tab-content">
+            <div class="tab-pane active" id="giangVien">
+                <div class="container">
+                    <div class="content-container clearfix">
+                        <div class="row">
+                            <h3 class="text-center">Quản lý giảng viên</h3>
+                        </div>
+                        <div th:if="${success}"
+                             class="row alert alert-success alert-dismissible">
+                            <button type="button" class="close" data-dismiss="alert"
+                                    aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <span th:text="${success}"></span>
+                        </div>
+                        <div class="row">
+                            <a th:href="@{/giangVien/create}" class="btn btn-success pull-left">
+                                <span class="glyphicon glyphicon-plus"></span> Thêm giảng viên
+                            </a>
+                            <form class="form-inline pull-right" action="#"
+                                  th:action="@{/giangVien/search}" method="GET">
+                                <div class="form-group">
+                                    <input type="text" class="form-control" name="search"
+                                           placeholder="Nhập tên giảng viên..." />
+                                </div>
+                                <button type="submit" class="btn btn-primary">Tìm kiếm</button>
+                            </form>
+                        </div>
+                        <span class="help-block"></span>
+                        <div class="row">
+                            <div class="panel panel-info">
+                                <div class="panel-body">
+                                    <table width='100px' class="table table-bordered table-hover table-striped table-responsive">
+                                        <thead>
+                                            <tr class="btn-info">
+                                                <th width="5%" class="text-center">STT</th>
+                                                <th width="15%" class="text-center">Họ và tên</th>
+                                                <th width="8%" class="text-center">Năm sinh</th>
+                                                <th width="10%" class="text-center">Chức vụ</th>
+                                                <th class="text-center">Học hàm</th>
+                                                <th class="text-center">Bộ môn</th>
+                                                <th class="text-center">Thống kê</th>
+                                                <th class="text-center">Sửa</th>
+                                                <th class="text-center">Xóa</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr th:if="${#lists.isEmpty(giangViens)}" class="btn-default">
+                                                <td colspan="12" align="center">Không có thông tin hiển thị!!!</td>
+                                            </tr>
+                                            <tr th:each="giangVien,iterStat : ${giangViens}">
+                                                <td class="text-center" width='5%' th:text="${iterStat.count}"></td>
+                                                <td th:text="${giangVien.hoTen}"></td>
+                                                <td class="text-center" th:text="${giangVien.namSinh}"></td>
+                                                <td th:text="${giangVien.chucVu}"></td>
+                                                <td th:text="${giangVien.hocHamText}"></td>
+                                                <td th:text="${giangVien.tenBoMon}"></td>
+                                                <td class="text-center" width='8%'><a th:href="@{/giangVien/{objectId}/statistic(objectId=${giangVien.id})}"><span
+                                                            class="glyphicon glyphicon-th-list"></span></a></td>
+                                                <td class="text-center" width='5%'><a th:href="@{/giangVien/{id}/edit(id=${giangVien.id})}"><span
+                                                            class="glyphicon glyphicon-pencil"></span></a></td>
+                                                <td class="text-center" width='5%'><a th:href="@{/giangVien/{id}/delete(id=${giangVien.id})}"><span
+                                                            class="glyphicon glyphicon-trash"></span></a></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <!--        <footer>
+                    <div class="separator" th:replace="fragments/footer :: footer">&copy; 2018 Tuno</div>
+                </footer>-->
+    </body>
+</html>

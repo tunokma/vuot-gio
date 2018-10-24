@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Thống kê vượt giờ</title>
+        <meta name="description" content="spring-boot thymeleaf | tongHop ">
+            <div th:replace="fragments/header :: header-css"></div>
+    </head>
+    <body>
+        <div th:replace="fragments/header-admin :: header-admin"></div>
+        <div class="tab-content">
+            <div class="tab-pane active" id="tongHop">
+                <div class="content-container clearfix">
+                    <div class="row">
+                        <div class="row">
+                            <h3 class="text-center">Chi tiết giảng viên(Tổng hợp)</h3>
+                        </div>
+                        <div class="col-sm-3"></div>
+                        <div class="collapse navbar-collapse col-sm-6" id="bs-example-navbar-collapse">
+                            <ul class="nav navbar-nav navbar-center">
+                                <li >
+                                    <a class="btn icon-btn " th:href="@{/giangVien/{objectId}/statistic/(objectId=${objectId})}">
+                                        Tổng hợp
+                                    </a>
+                                </li>                
+                                <li >
+                                    <a class="btn icon-btn " th:href="@{/giangVien/{objectId}/statistic/giangDay(objectId=${objectId})}">
+                                        Giảng dạy
+                                    </a>
+                                </li>                
+                                <li >
+                                    <a class="btn icon-btn " th:href="@{/giangVien/{objectId}/statistic/hdTotNghiep(objectId=${objectId})}">
+                                        Hướng dẫn đồ án
+                                    </a>
+                                </li>                
+                                <li >
+                                    <a class="btn icon-btn " th:href="@{/giangVien/{objectId}/statistic/NCKH(objectId=${objectId})}">
+                                        Nghiên cứu khoa học
+                                    </a>
+                                </li>                
+                            </ul>
+                        </div>
+                        <div class="col-sm-3"></div>
+                    </div>
+                    <span class="help-block"></span>
+                    <div class="row">
+                        <div class="panel panel-info">
+                            <div class="panel-body">
+                                <table width='100px' class="table table-bordered table-hover table-striped table-responsive">
+                                    <thead>
+                                        <tr class="btn-info">
+                                            <th width="5%" class="text-center">STT</th>
+                                            <th class="text-center">Tổng số tiết thực hiện</th>
+                                            <th class="text-center">Số tiết phải giảng</th>
+                                            <th class="text-center">Số giờ chưa hoàn thành NCKH</th>
+                                            <th class="text-center">Số tiết dạy được giảm trừ</th>
+                                            <th class="text-center">Tổng số tiết thanh toán</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr th:if="${#lists.isEmpty(tongHops)}" class="btn-default">
+                                            <td colspan="12" align="center">Không có thông tin hiển thị!!!</td>
+                                        </tr>
+                                        <tr th:each="tongHop,iterStat : ${tongHops}">
+                                            <td class="text-center" width='5%' th:text="${iterStat.count}"></td>
+                                            <td class="text-center" th:text="${tongHop.tongSoTiet}"></td>
+                                            <td class="text-center" th:text="${tongHop.soTietPhaiGiang}"></td>
+                                            <td class="text-center" th:text="${tongHop.soTietChuaHTNCKH}"></td>
+                                            <td class="text-center" th:text="${tongHop.soTietGiamTru}"></td>
+                                            <td class="text-center" th:text="${tongHop.soTietThanhToan}"></td>
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <!--        <footer>
+                    <div class="separator" th:replace="fragments/footer :: footer">&copy; 2018 Tuno</div>
+                </footer>-->
+        <script>
+            $('#modal-toTrash').on('show.bs.modal', function (e) {
+                $(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
+                $('#modal-toTrashHiddenId').val($(this).find('.btn-ok').attr('href'));
+            });
+
+            $('#modal-delete').on('show.bs.modal', function (e) {
+                $(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
+                $('#modal-deleteHiddenId').val($(this).find('.btn-ok').attr('href'));
+            });
+
+        </script>
+    </body>
+</html>
