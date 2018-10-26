@@ -5,11 +5,16 @@
  */
 package com.kma.quanlygiangday.controller;
 
+import com.kma.quanlygiangday.model.MonHoc;
 import com.kma.quanlygiangday.model.TbdGiangDay;
+import com.kma.quanlygiangday.service.BoMonService;
 import com.kma.quanlygiangday.service.GiangDayService;
+import com.kma.quanlygiangday.service.GiangVienService;
+import com.kma.quanlygiangday.service.MonHocService;
 import com.kma.quanlygiangday.utils.Constants;
 import com.kma.quanlygiangday.utils.DateUtil;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import javax.validation.Valid;
 import org.slf4j.Logger;
@@ -37,9 +42,16 @@ public class GiangDayController {
 
     @Autowired
     GiangDayService giangDayService;
+    @Autowired
+    GiangVienService giangVienService;
+    @Autowired
+    BoMonService boMonService;
+    @Autowired
+    MonHocService monHocService;
 
     Map<String, String> hkCnMap = new HashMap<>();
     Map<String, String> namHocMap = new HashMap<>();
+    Map<String, String> monHocMap = new HashMap<>();
     String namHocNay;
 
     public void loadNamHoc() {
@@ -59,6 +71,13 @@ public class GiangDayController {
         hkCnMap.put(Constants.HocKy_ChuyenNganh.HOC_KY_2_MM, Constants.HocKy_ChuyenNganh.HOC_KY_2_MM_TEXT);
     }
 
+    public void loadMonHoc(List<MonHoc> lstMon) {
+        monHocMap.clear();
+        lstMon.forEach((monHoc) -> {
+            monHocMap.put(monHoc.getTenMon(), monHoc.getTenMon());
+        });
+    }
+
     @RequestMapping("/giangVien/{objectId}/statistic/giangDay")
     public String statistic(@PathVariable Long objectId, Model model) {
         loadMap();
@@ -73,6 +92,9 @@ public class GiangDayController {
             return "giangDay-form";
         }
         giangDay.setIsDeleted(Constants.SetDelete.NOT_DELETE);
+        if (giangDay.getTenMon() != null) {
+            giangDay.setDvhtTc(monHocService.findByTenMon(giangDay.getTenMon()).getDvhtTc());
+        }
         giangDayService.save(giangDay);
         redirect.addFlashAttribute("success", "Thành công!!!");
         return "redirect:/giangVien/{objectId}/statistic/giangDay";
@@ -85,6 +107,12 @@ public class GiangDayController {
         tbdGiangDay.setIsDeleted(Constants.SetDelete.NOT_DELETE);
         tbdGiangDay.setNamHoc(namHocNay);
         loadNamHoc();
+
+        Long idBoMon = giangVienService.findById(objectId).getIdBoMon();
+        Long idKhoa = boMonService.findById(idBoMon).getIdKhoa();
+        List<MonHoc> lstMonHoc = monHocService.findByIdKhoa(idKhoa);
+        loadMonHoc(lstMonHoc);
+        model.addAttribute("monHocMap", monHocMap);
         model.addAttribute("namHocMap", namHocMap);
         model.addAttribute("namHocNay", namHocNay);
         model.addAttribute("giangDay", tbdGiangDay);
@@ -101,6 +129,12 @@ public class GiangDayController {
         model.addAttribute("objectId", objectId);
         model.addAttribute("hkCnMap", hkCnMap);
         loadNamHoc();
+
+        Long idBoMon = giangVienService.findById(objectId).getIdBoMon();
+        Long idKhoa = boMonService.findById(idBoMon).getIdKhoa();
+        List<MonHoc> lstMonHoc = monHocService.findByIdKhoa(idKhoa);
+        loadMonHoc(lstMonHoc);
+        model.addAttribute("monHocMap", monHocMap);
         model.addAttribute("namHocMap", namHocMap);
         model.addAttribute("namHocNay", giangDay.getNamHoc());
         return "giangDay-form";

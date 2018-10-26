@@ -6,6 +6,7 @@
 package com.kma.quanlygiangday.controller;
 
 import com.kma.quanlygiangday.model.Khoa;
+import com.kma.quanlygiangday.service.BoMonService;
 import com.kma.quanlygiangday.service.KhoaService;
 import javax.validation.Valid;
 import org.slf4j.Logger;
@@ -27,23 +28,22 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
  */
 @Controller
 @ComponentScan
-public class AdminController {
+public class KhoaController {
 
-    private static final Logger logger = LoggerFactory.getLogger(AdminController.class);
+    private static final Logger logger = LoggerFactory.getLogger(KhoaController.class);
 
     @Autowired
-    GlobalController globalController;
+    BoMonService boMonService;
     @Autowired
     private KhoaService khoaService;
 
-       
     @PostMapping("/khoa/save")
     public String save(@Valid Khoa khoa, BindingResult result, RedirectAttributes redirect) {
         if (result.hasErrors()) {
             return "khoa-form";
         }
         khoaService.save(khoa);
-        redirect.addFlashAttribute("success", "Saved khoa successfully!");
+        redirect.addFlashAttribute("success", "Thành công!");
         return "redirect:/khoa";
     }
 
@@ -58,11 +58,16 @@ public class AdminController {
         model.addAttribute("khoa", khoaService.findById(id));
         return "khoa-form";
     }
-    
+
     @GetMapping("/khoa/{id}/delete")
     public String delete(@PathVariable Long id, RedirectAttributes redirect) {
-        khoaService.delete(id);
-        redirect.addFlashAttribute("success", "Xóa khoa thành công!");
+        if (!boMonService.findByIdKhoa(id)) {
+            khoaService.delete(id);
+            redirect.addFlashAttribute("success", "Thành công!");
+        } else {
+            redirect.addFlashAttribute("warning", "Không thể xóa khoa đang sử dụng!");
+        }
+
         return "redirect:/khoa";
     }
 

@@ -59,6 +59,7 @@ public class GiangVienController {
 
     Map<String, String> soTietDMMap = new HashMap<>();
     Map<Long, String> giamTruMap = new HashMap<>();
+    Map<Long, String> chuNhiemMap = new HashMap<>();
 
 //<editor-fold defaultstate="collapsed" desc="load">
     public void loadMap() {
@@ -76,7 +77,7 @@ public class GiangVienController {
         hocHamMap.put(Constants.HocHam.THAC_SY, Constants.HocHam.THAC_SY_TEXT);
         hocHamMap.put(Constants.HocHam.TIEN_SI, Constants.HocHam.TIEN_SI_TEXT);
         hocHamMap.put(Constants.HocHam.PGS_TIEN_SI, Constants.HocHam.PGS_TIEN_SI_TEXT);
-        hocHamMap.put(Constants.HocHam.GS_TIEN_SI, Constants.HocHam.PGS_TIEN_SI_TEXT);
+        hocHamMap.put(Constants.HocHam.GS_TIEN_SI, Constants.HocHam.GS_TIEN_SI_TEXT);
     }
 
     public void loadGiamTru() {
@@ -87,6 +88,13 @@ public class GiangVienController {
                 giamTruMap.put(tbdMienGiam.getId(), tbdMienGiam.getDoiTuong());
             }
         }
+    }
+
+    public void loadChuNhiem() {
+        chuNhiemMap.clear();
+        chuNhiemMap.put(Constants.CHU_NHIEM.KHONG, Constants.CHU_NHIEM.KHONG_TEXT);
+        chuNhiemMap.put(Constants.CHU_NHIEM.KHOA, Constants.CHU_NHIEM.KHOA_TEXT);
+        chuNhiemMap.put(Constants.CHU_NHIEM.BO_MON, Constants.CHU_NHIEM.BO_MON_TEXT);
     }
 //</editor-fold>
 
@@ -143,11 +151,13 @@ public class GiangVienController {
     public String create(Model model) {
         model.addAttribute("giangVienVM", new GiangVienVM());
         loadGiamTru();
+        loadChuNhiem();
         Map<Long, String> mapTenBoMon = giangVienService.getBoMon();
         model.addAttribute("mapTenBoMon", mapTenBoMon);
         model.addAttribute("hocHamMap", hocHamMap);
         model.addAttribute("soTietDMMap", soTietDMMap);
-        // model.addAttribute("giamTruMap", giamTruMap);
+        model.addAttribute("giamTruMap", giamTruMap);
+        model.addAttribute("chuNhiemMap", chuNhiemMap);
         model.addAttribute("msg", "create");
         return "giangVien-form";
     }
@@ -156,10 +166,18 @@ public class GiangVienController {
     public String edit(@PathVariable Long id, Model model) {
         GiangVienVM gv = new GiangVienVM(giangVienService.findById(id));
         model.addAttribute("giangVienVM", gv);
+        loadGiamTru();
+        loadChuNhiem();
         Map<Long, String> mapTenBoMon = giangVienService.getBoMon();
         model.addAttribute("mapTenBoMon", mapTenBoMon);
         model.addAttribute("hocHamMap", hocHamMap);
         model.addAttribute("soTietDMMap", soTietDMMap);
+
+//        String giamTruString = gv.getGiamTru();
+//        String[] chosenGiamTru = giamTruString.split(",");
+        model.addAttribute("giamTruMap", giamTruMap);
+        model.addAttribute("chuNhiemMap", chuNhiemMap);
+//        model.addAttribute("chosenGiamTru", chosenGiamTru);
         return "giangVien-form";
     }
 

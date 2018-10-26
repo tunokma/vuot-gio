@@ -42,7 +42,7 @@ public class HdTotNghiepRepositoryImpl implements HdTotNghiepRepositoryCustom {
     @Override
     public Long getSoTietByObjectId(Long objectId, String namHoc) {
         Long soTiet = 0l;
-        Query query = session.createQuery("SELECT COUNT(t.soTietQd) FROM TbdHdTotNghiep t WHERE t.isDeleted = 0"
+        Query query = session.createQuery("SELECT SUM(t.soTietQd) FROM TbdHdTotNghiep t WHERE t.isDeleted = 0"
                 + " AND t.objectId = :objectId"
                 + " AND t.namHoc = :namHoc");
         query.setParameter("objectId", objectId);

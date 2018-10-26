@@ -64,6 +64,9 @@ public class GiangVien implements Serializable {
     @Column(name = "role")
     private Long role;
 
+    @Column(name = "chu_nhiem")
+    private Long chuNhiem;
+
     @Column(name = "dinh_muc_gg")
     private String dinhMucGG;
 
@@ -89,6 +92,7 @@ public class GiangVien implements Serializable {
         this.email = giangVien.getEmail();
         this.dinhMucGG = giangVien.getDinhMucGG();
         this.mucTtChuan = giangVien.getMucTtChuan();
+        this.chuNhiem = giangVien.getChuNhiem();
     }
 
     public Long getId() {
@@ -105,6 +109,14 @@ public class GiangVien implements Serializable {
 
     public void setHoTen(String hoTen) {
         this.hoTen = hoTen;
+    }
+
+    public Long getChuNhiem() {
+        return chuNhiem;
+    }
+
+    public void setChuNhiem(Long chuNhiem) {
+        this.chuNhiem = chuNhiem;
     }
 
     public Long getNamSinh() {

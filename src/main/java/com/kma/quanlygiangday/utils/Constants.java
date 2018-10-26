@@ -69,4 +69,15 @@ public final class Constants {
         public final long CO_BAN_THAI_SAN = 135;
         public final long CHUYEN_MON_THAI_SAN = 130;
     }
+
+    public interface CHU_NHIEM {
+
+        public final long KHONG = 0l;
+        public final long KHOA = 1l;
+        public final long BO_MON = 2l;
+
+        public final String KHONG_TEXT = "Không";
+        public final String KHOA_TEXT = "Khoa";
+        public final String BO_MON_TEXT = "Bộ môn";
+    }
 }

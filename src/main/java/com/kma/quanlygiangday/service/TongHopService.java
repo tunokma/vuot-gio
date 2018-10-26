@@ -28,4 +28,6 @@ public interface TongHopService {
 
     List<TongHop> findAll();
 
+    int deleteFromObjectId(Long objectId);
+    
 }

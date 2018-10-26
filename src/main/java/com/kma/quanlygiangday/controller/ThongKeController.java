@@ -86,7 +86,9 @@ public class ThongKeController {
     List<ThongKeVM> lstThongKe;
     List<TongHop> lstTongHop;
     String namHocNay;
-
+    
+//<editor-fold defaultstate="collapsed" desc="mapping">
+    
     public void loadNamHoc() {
         namHocNay = DateUtil.getNamHoc(DateUtil.now(), 0);
         namHocMap.clear();
@@ -96,7 +98,7 @@ public class ThongKeController {
         namHocMap.put(DateUtil.getNamHoc(DateUtil.now(), 1), DateUtil.getNamHoc(DateUtil.now(), 1));
         namHocMap.put(namHocNay, namHocNay);
     }
-
+    
     public void loadMap() {
         soTietDMMap.clear();
         soTietDMMap.put(Constants.DINH_MUC_GIANG_DAY.CHUYEN_MON, Constants.SO_TIET.CHUYEN_MON);
@@ -104,7 +106,7 @@ public class ThongKeController {
         soTietDMMap.put(Constants.DINH_MUC_GIANG_DAY.CHUYEN_MON_THAI_SAN, Constants.SO_TIET.CHUYEN_MON_THAI_SAN);
         soTietDMMap.put(Constants.DINH_MUC_GIANG_DAY.CO_BAN_THAI_SAN, Constants.SO_TIET.CO_BAN_THAI_SAN);
     }
-
+    
     public void loadKhoaMap() {
         khoaMap.clear();
         List<Khoa> lstKhoa = khoaService.findAll();
@@ -115,6 +117,7 @@ public class ThongKeController {
             }
         }
     }
+//</editor-fold>
 
     @RequestMapping("/thongKe")
     public String thongKe(Model model) {
@@ -152,7 +155,7 @@ public class ThongKeController {
     }
 
     @RequestMapping(value = "/thongKe/baoCao", method = RequestMethod.GET)
-    public String baoCao(HttpServletResponse response, Model model) {
+    public void baoCao(HttpServletResponse response) {
         try {
 
             List<BoMonVM> lstBoMonVM = new ArrayList<>();
@@ -243,11 +246,9 @@ public class ThongKeController {
 
                 FileCopyUtils.copy(inputStream, response.getOutputStream());
 
-                model.addAttribute("thongKes", lstThongKe);
             }
         } catch (IOException e) {
         }
-        return "redirect:/thongKe";
     }
 
     private Boolean existTenBoMon(List<String> lst, String ten) {

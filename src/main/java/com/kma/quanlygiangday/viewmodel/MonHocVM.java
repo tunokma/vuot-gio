@@ -14,19 +14,21 @@ import com.kma.quanlygiangday.model.MonHoc;
 public class MonHocVM {
 
     private Long id;
-    private Long idBoMon;
+    private Long idKhoa;
     private String tenMon;
+    private Long dvhtTc;
     private String moTa;
-    private String tenBoMon;
+    private String tenKhoa;
 
     public MonHocVM() {
     }
 
     public MonHocVM(MonHoc monHoc) {
         this.id = monHoc.getId();
-        this.idBoMon = monHoc.getIdBoMon();
+        this.idKhoa = monHoc.getIdKhoa();
         this.tenMon = monHoc.getTenMon();
         this.moTa = monHoc.getMoTa();
+        this.dvhtTc = monHoc.getDvhtTc();
     }
 
     public Long getId() {
@@ -37,12 +39,12 @@ public class MonHocVM {
         this.id = id;
     }
 
-    public Long getIdBoMon() {
-        return idBoMon;
+    public Long getIdKhoa() {
+        return idKhoa;
     }
 
-    public void setIdBoMon(Long idBoMon) {
-        this.idBoMon = idBoMon;
+    public void setIdKhoa(Long idKhoa) {
+        this.idKhoa = idKhoa;
     }
 
     public String getTenMon() {
@@ -61,12 +63,20 @@ public class MonHocVM {
         this.moTa = moTa;
     }
 
-    public String getTenBoMon() {
-        return tenBoMon;
+    public String getTenKhoa() {
+        return tenKhoa;
     }
 
-    public void setTenBoMon(String tenBoMon) {
-        this.tenBoMon = tenBoMon;
+    public void setTenKhoa(String tenBoMon) {
+        this.tenKhoa = tenBoMon;
+    }
+
+    public Long getDvhtTc() {
+        return dvhtTc;
+    }
+
+    public void setDvhtTc(Long dvhtTc) {
+        this.dvhtTc = dvhtTc;
     }
 
 }

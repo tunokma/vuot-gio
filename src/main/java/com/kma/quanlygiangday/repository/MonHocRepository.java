@@ -7,6 +7,7 @@ package com.kma.quanlygiangday.repository;
 
 import com.kma.quanlygiangday.repository.custom.MonHocRepositoryCustom;
 import com.kma.quanlygiangday.model.MonHoc;
+import java.util.List;
 import org.springframework.data.repository.CrudRepository;
 
 /**
@@ -14,5 +15,7 @@ import org.springframework.data.repository.CrudRepository;
  * @author Tuno
  */
 public interface MonHocRepository extends CrudRepository<MonHoc, Long>, MonHocRepositoryCustom{
+    List<MonHoc> findByIdKhoa(Long idBoMon);
     
+    MonHoc findByTenMon(String tenMon);
 }

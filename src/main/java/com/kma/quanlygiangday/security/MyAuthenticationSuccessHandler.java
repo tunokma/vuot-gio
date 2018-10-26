@@ -48,7 +48,7 @@ public class MyAuthenticationSuccessHandler extends SimpleUrlAuthenticationSucce
         }
 
         if (isAdmin(roles)) {
-            return "/khoa";
+            return "/trangChu";
         } else if (isUser(roles)) {
             return "/user-tongHop";
         } else {

@@ -41,7 +41,7 @@ public class TongHopRepositoryImpl implements TongHopRepositoryCustom {
         if (lst == null || lst.isEmpty()) {
             return new TongHop();
         }
-        return lst.get(0) ;
+        return lst.get(0);
     }
 
     @Override
@@ -66,7 +66,7 @@ public class TongHopRepositoryImpl implements TongHopRepositoryCustom {
             }
 
         }
-        Query query = session.createQuery("SELECT t "+ hql);
+        Query query = session.createQuery("SELECT t " + hql);
         for (int i = 0; i < lstParam.size(); i++) {
             query.setParameter(i, lstParam.get(i));
         }
@@ -74,7 +74,14 @@ public class TongHopRepositoryImpl implements TongHopRepositoryCustom {
         if (lst == null || lst.isEmpty()) {
             lst = new ArrayList<>();
         }
-        return lst ;
+        return lst;
+    }
+
+    @Override
+    public int deleteFromObjectId(Long objectId) {
+        Query query = session.createQuery("DELETE FROM TongHop t WHERE t.objectId = :objectId");
+        query.setParameter("objectId", objectId);
+        return query.executeUpdate();
     }
 
 }

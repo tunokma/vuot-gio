@@ -34,7 +34,7 @@ public class NCKHController {
     private static final Logger logger = LoggerFactory.getLogger(NCKHController.class);
     @Autowired
     NCKHService nckhService;
-    
+    String namHocNay = DateUtil.getNamHoc(DateUtil.now(), 0);
     @RequestMapping("/giangVien/{objectId}/statistic/NCKH")
     public String statistic(@PathVariable Long objectId, Model model){
         model.addAttribute("nckhs", nckhService.findByObjectId(objectId,DateUtil.getNamHoc(DateUtil.now(),0)));
@@ -48,6 +48,7 @@ public class NCKHController {
             return "nckh-form";
         }
         nckh.setIsDeleted(Constants.SetDelete.NOT_DELETE);
+        nckh.setNamHoc(namHocNay);
         nckhService.save(nckh);
         redirect.addFlashAttribute("success", "Thành công!!!");
         return "redirect:/giangVien/{objectId}/statistic/NCKH";

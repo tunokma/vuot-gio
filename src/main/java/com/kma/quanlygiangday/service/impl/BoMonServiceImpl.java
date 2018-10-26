@@ -90,4 +90,10 @@ public class BoMonServiceImpl implements BoMonService {
         return map;
     }
 
+    @Override
+    public Boolean findByIdKhoa(Long idKhoa) {
+        List<BoMon> lst = boMonRepository.findByIdKhoa(idKhoa);
+        return !(lst == null || lst.isEmpty());
+    }
+
 }

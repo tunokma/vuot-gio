@@ -12,7 +12,30 @@
                 <div class="container">
                     <div class="content-container clearfix">
                         <div class="row">
-                            <h3 class="text-center">Quản lý môn học</h3>
+                            <div class="row">
+                                <h3 class="text-center">Quản lý chung(môn học)</h3>
+                            </div>
+
+                            <div class="col-sm-4"></div>
+                            <div class="col-sm-4" id="bs-example-navbar-collapse">
+                                <ul class="nav navbar-nav navbar-center">
+                                    <li class='col-sm-4'>
+                                        <a class="btn icon-btn " th:href="@{/khoa}">
+                                            Khoa
+                                        </a>
+                                    </li>                
+                                    <li class='col-sm-4'>
+                                        <a class="btn icon-btn " th:href="@{/boMon}">
+                                            Bộ môn
+                                        </a>
+                                    </li>                
+                                    <li class='col-sm-4'>
+                                        <a class="btn icon-btn " th:href="@{/monHoc}">
+                                            Môn học
+                                        </a>
+                                    </li>               
+                                </ul>
+                            </div>
                         </div>
                         <div th:if="${success}"
                              class="row alert alert-success alert-dismissible">
@@ -30,7 +53,7 @@
                                   th:action="@{/monHoc/search}" method="GET">
                                 <div class="form-group">
                                     <input type="text" class="form-control" name="search"
-                                           placeholder="Nhập tên bộ môn..." />
+                                           placeholder="Nhập tên môn học..." />
                                 </div>
                                 <button type="submit" class="btn btn-primary">Tìm kiếm</button>
                             </form>
@@ -44,7 +67,8 @@
                                             <tr class="btn-info">
                                                 <th class="text-center">STT</th>
                                                 <th class="text-center">Tên môn học</th>
-                                                <th class="text-center">Tên bộ môn</th>
+                                                <th class="text-center">ĐVHT/TC</th>
+                                                <th class="text-center">Khoa</th>
                                                 <th class="text-center">Mô tả</th>
                                                 <th class="text-center">Sửa</th>
                                                 <th class="text-center">Xóa</th>
@@ -52,13 +76,14 @@
                                         </thead>
                                         <tbody>
                                             <tr th:if="${#lists.isEmpty(monHocs)}" class="btn-default">
-                                                <td colspan="6" align="center">Không có thông tin hiển thị!!!</td>
+                                                <td colspan="7" align="center">Không có thông tin hiển thị!!!</td>
                                             </tr>
                                             <tr th:each="monHoc,iterStat : ${monHocs}">
                                                 <td width='5%' th:text="${iterStat.count}"></td>
                                                 <td width='15%' th:text="${monHoc.tenMon}"></td>
-                                                <td width='15%' th:text="${monHoc.tenBoMon}"></td>
-                                                <td width='40%' th:text="${monHoc.moTa}"></td>
+                                                <td class="text-center" width='10%' th:text="${monHoc.dvhtTc}"></td>
+                                                <td width='15%' th:text="${monHoc.tenKhoa}"></td>
+                                                <td th:text="${monHoc.moTa}"></td>
                                                 <td class="text-center" width='5%'><a th:href="@{/monHoc/{id}/edit(id=${monHoc.id})}"><span
                                                             class="glyphicon glyphicon-pencil"></span></a></td>
                                                 <td class="text-center" width='5%'><a th:href="@{/monHoc/{id}/delete(id=${monHoc.id})}"><span

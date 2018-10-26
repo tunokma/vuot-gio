@@ -9,6 +9,7 @@ import com.kma.quanlygiangday.model.BoMon;
 import com.kma.quanlygiangday.model.GiangVien;
 import com.kma.quanlygiangday.repository.BoMonRepository;
 import com.kma.quanlygiangday.repository.GiangVienRepository;
+import com.kma.quanlygiangday.repository.TongHopRepository;
 import com.kma.quanlygiangday.service.GiangVienService;
 import com.kma.quanlygiangday.viewmodel.GiangVienVM;
 import java.util.ArrayList;
@@ -34,6 +35,9 @@ public class GiangVienServiceImpl implements GiangVienService {
     @Autowired
     BoMonRepository boMonRepository;
 
+    @Autowired
+    TongHopRepository tongHopRepository;
+
     @Override
     public GiangVien save(GiangVien giangVien) {
         return giangVienRepository.save(giangVien);
@@ -42,6 +46,7 @@ public class GiangVienServiceImpl implements GiangVienService {
     @Override
     public Boolean delete(Long id) {
         if (giangVienRepository.existsById(id)) {
+            tongHopRepository.deleteFromObjectId(id);
             giangVienRepository.deleteById(id);
             return true;
         }

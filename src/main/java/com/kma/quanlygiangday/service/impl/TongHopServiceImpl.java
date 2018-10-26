@@ -63,4 +63,9 @@ public class TongHopServiceImpl implements TongHopService {
         return tongHopRepository.search(tongHop);
     }
 
+    @Override
+    public int deleteFromObjectId(Long objectId) {
+        return tongHopRepository.deleteFromObjectId(objectId);
+    }
+
 }

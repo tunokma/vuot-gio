@@ -23,7 +23,7 @@ public class KhoaServiceImpl implements KhoaService {
 
     @Autowired
     KhoaRepository khoaRepository;
-
+    
     @Override
     public Khoa save(Khoa khoa) {
         return khoaRepository.save(khoa);

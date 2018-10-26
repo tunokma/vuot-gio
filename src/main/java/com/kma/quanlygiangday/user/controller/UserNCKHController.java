@@ -33,28 +33,31 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @Controller
 @ComponentScan
 public class UserNCKHController {
-    
+
     private static final Logger logger = LoggerFactory.getLogger(UserNCKHController.class);
     @Autowired
     NCKHService nckhService;
-    
+
     @Autowired
     GiangVienService giangVienService;
     GiangVien giangVien;
-    
+    String namHocNay = DateUtil.getNamHoc(DateUtil.now(), 0);
+
     @RequestMapping("/user-NCKH")
-    public String statistic(Model model){
+    public String statistic(Model model) {
         giangVien = giangVienService.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
-        model.addAttribute("nckhs", nckhService.findByObjectId(giangVien.getId(),DateUtil.getNamHoc(DateUtil.now(),0)));
+        model.addAttribute("nckhs", nckhService.findByObjectId(giangVien.getId(), DateUtil.getNamHoc(DateUtil.now(), 0)));
         return "user-NCKH";
     }
-    
+
     @PostMapping("/user-NCKH/save")
     public String save(@Valid TbdNckh nckh, BindingResult result, RedirectAttributes redirect) {
         if (result.hasErrors()) {
             return "user-NCKH-form";
         }
         nckh.setIsDeleted(Constants.SetDelete.NOT_DELETE);
+        nckh.setNamHoc(namHocNay);
+        nckh.setObjectId(giangVien.getId());
         nckhService.save(nckh);
         redirect.addFlashAttribute("success", "Thành công!!!");
         return "redirect:/user-NCKH";

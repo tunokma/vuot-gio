@@ -27,11 +27,14 @@ public class MonHoc implements Serializable {
     @Column(name = "id", unique = true, nullable = false)
     private Long id;
 
-    @Column(name = "id_bo_mon")
-    private Long idBoMon;
+    @Column(name = "id_khoa")
+    private Long idKhoa;
 
     @Column(name = "ten_mon")
     private String tenMon;
+
+    @Column(name = "dvht_tc")
+    private Long dvhtTc;
 
     @Column(name = "mo_ta")
     private String moTa;
@@ -41,9 +44,10 @@ public class MonHoc implements Serializable {
 
     public MonHoc(MonHocVM monHocVM) {
         this.id = monHocVM.getId();
-        this.idBoMon = monHocVM.getIdBoMon();
+        this.idKhoa = monHocVM.getIdKhoa();
         this.tenMon = monHocVM.getTenMon();
         this.moTa = monHocVM.getMoTa();
+        this.dvhtTc = monHocVM.getDvhtTc();
     }
 
     public Long getId() {
@@ -54,12 +58,12 @@ public class MonHoc implements Serializable {
         this.id = id;
     }
 
-    public Long getIdBoMon() {
-        return idBoMon;
+    public Long getIdKhoa() {
+        return idKhoa;
     }
 
-    public void setIdBoMon(Long idBoMon) {
-        this.idBoMon = idBoMon;
+    public void setKhoa(Long idKhoa) {
+        this.idKhoa = idKhoa;
     }
 
     public String getTenMon() {
@@ -76,6 +80,14 @@ public class MonHoc implements Serializable {
 
     public void setMoTa(String moTa) {
         this.moTa = moTa;
+    }
+
+    public Long getDvhtTc() {
+        return dvhtTc;
+    }
+
+    public void setDvhtTc(Long dvhtTc) {
+        this.dvhtTc = dvhtTc;
     }
 
 }

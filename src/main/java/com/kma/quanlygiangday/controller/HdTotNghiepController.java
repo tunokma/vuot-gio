@@ -30,24 +30,26 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @Controller
 @ComponentScan
 public class HdTotNghiepController {
-    
+
     private static final Logger logger = LoggerFactory.getLogger(HdTotNghiepController.class);
     @Autowired
     HdTotNghiepService hdTotNghiepService;
-    
+    String namHocNay = DateUtil.getNamHoc(DateUtil.now(), 0);
+
     @RequestMapping("/giangVien/{objectId}/statistic/hdTotNghiep")
-    public String statistic(@PathVariable Long objectId, Model model){
-        model.addAttribute("hdTotNghieps", hdTotNghiepService.findByObjectId(objectId,DateUtil.getNamHoc(DateUtil.now(),0)));
-        model.addAttribute("objectId",objectId);
+    public String statistic(@PathVariable Long objectId, Model model) {
+        model.addAttribute("hdTotNghieps", hdTotNghiepService.findByObjectId(objectId, DateUtil.getNamHoc(DateUtil.now(), 0)));
+        model.addAttribute("objectId", objectId);
         return "hdTotNghiep";
     }
-    
+
     @PostMapping("/giangVien/{objectId}/statistic/hdTotNghiep/save")
     public String save(@Valid TbdHdTotNghiep hdTotNghiep, BindingResult result, RedirectAttributes redirect) {
         if (result.hasErrors()) {
             return "hdTotNghiep-form";
         }
         hdTotNghiep.setIsDeleted(Constants.SetDelete.NOT_DELETE);
+        hdTotNghiep.setNamHoc(namHocNay);
         hdTotNghiepService.save(hdTotNghiep);
         redirect.addFlashAttribute("success", "Thành công!!!");
         return "redirect:/giangVien/{objectId}/statistic/hdTotNghiep";
@@ -77,5 +79,5 @@ public class HdTotNghiepController {
         redirect.addFlashAttribute("success", "Thành công!!!");
         return "redirect:/giangVien/{objectId}/statistic/hdTotNghiep";
     }
-    
+
 }

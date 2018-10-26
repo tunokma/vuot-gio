@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+~<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
     <head>
         <title>Bộ môn</title>
@@ -28,19 +28,25 @@
                                     </div>
 
                                     <div class="form-group">
-                                        <label>Bộ môn</label> 
-                                        <select th:if="${monHocVM.idBoMon==null}" th:field="*{idBoMon}" class="form-control">
+                                        <label>ĐVHT/TC</label> 
+                                        <input type="number" class="form-control"
+                                               th:field="*{dvhtTc}" placeholder=" " />   
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label>Khoa</label> 
+                                        <select th:if="${monHocVM.idKhoa==null}" th:field="*{idKhoa}" class="form-control">
                                             <option value=""> --Chọn-- </option>
-                                            <option th:each="entry : ${mapTenBoMon.entrySet()}"
+                                            <option th:each="entry : ${mapTenKhoa.entrySet()}"
                                                     th:value="${entry.key}"
                                                     th:utext="${entry.value}">
                                             </option>
                                         </select> 
-                                        <select th:unless="${monHocVM.idBoMon==null}" th:field="*{idBoMon}" class="form-control">
-                                            <option th:each="entry : ${mapTenBoMon.entrySet()}"
+                                        <select th:unless="${monHocVM.idKhoa==null}" th:field="*{idKhoa}" class="form-control">
+                                            <option th:each="entry : ${mapTenKhoa.entrySet()}"
                                                     th:value="${entry.key}"
                                                     th:utext="${entry.value}"
-                                                    th:selected="${monHocVM.idBoMon==entry.key}">
+                                                    th:selected="${monHocVM.idKhoa==entry.key}">
                                             </option>
                                         </select> 
                                     </div>

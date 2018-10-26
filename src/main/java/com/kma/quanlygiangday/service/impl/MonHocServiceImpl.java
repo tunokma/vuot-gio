@@ -5,10 +5,8 @@
  */
 package com.kma.quanlygiangday.service.impl;
 
-import com.kma.quanlygiangday.model.BoMon;
 import com.kma.quanlygiangday.model.MonHoc;
 import com.kma.quanlygiangday.model.Khoa;
-import com.kma.quanlygiangday.repository.BoMonRepository;
 import com.kma.quanlygiangday.repository.MonHocRepository;
 import com.kma.quanlygiangday.repository.KhoaRepository;
 import com.kma.quanlygiangday.service.MonHocService;
@@ -34,7 +32,7 @@ public class MonHocServiceImpl implements MonHocService {
     MonHocRepository monHocRepository;
 
     @Autowired
-    BoMonRepository boMonRepository;
+    KhoaRepository khoaRepository;
 
     @Override
     public MonHoc save(MonHoc monHoc) {
@@ -64,19 +62,18 @@ public class MonHocServiceImpl implements MonHocService {
     public List<MonHocVM> findAll() {
         List<MonHocVM> lstReturn = new ArrayList<>();
         List<MonHoc> lst = (List<MonHoc>) monHocRepository.findAll();
-        List<BoMon> lstBoMon = (List<BoMon>) boMonRepository.findAll();
+        List<Khoa> lstKhoa = (List<Khoa>) khoaRepository.findAll();
         if (lst != null) {
             for (MonHoc monHoc : lst) {
                 MonHocVM temp = new MonHocVM(monHoc);
-                if (lstBoMon != null) {
-                    for (BoMon boMon : lstBoMon) {
-                        if (Objects.equals(monHoc.getIdBoMon(), boMon.getId())) {
-                            temp.setTenBoMon(boMon.getTenBoMon());
+                if (lstKhoa != null) {
+                    for (Khoa khoa : lstKhoa) {
+                        if (Objects.equals(monHoc.getIdKhoa(), khoa.getId())) {
+                            temp.setTenKhoa(khoa.getTenKhoa());
                             break;
                         }
                     }
                     lstReturn.add(temp);
-                    break;
                 }
             }
         }
@@ -88,33 +85,42 @@ public class MonHocServiceImpl implements MonHocService {
     public List<MonHocVM> search(String string) {
         List<MonHocVM> lstReturn = new ArrayList<>();
         List<MonHoc> lst = (List<MonHoc>) monHocRepository.findByfindByNameContaining(string);
-        List<BoMon> lstBoMon = (List<BoMon>) boMonRepository.findAll();
+        List<Khoa> lstKhoa = (List<Khoa>) khoaRepository.findAll();
         if (lst != null) {
             for (MonHoc monHoc : lst) {
                 MonHocVM temp = new MonHocVM(monHoc);
-                if (lstBoMon != null) {
-                    for (BoMon boMon : lstBoMon) {
-                        if (Objects.equals(monHoc.getIdBoMon(), boMon.getId())) {
-                            temp.setTenBoMon(monHoc.getTenMon());
+                if (lstKhoa != null) {
+                    for (Khoa khoa : lstKhoa) {
+                        if (Objects.equals(monHoc.getIdKhoa(), khoa.getId())) {
+                            temp.setTenKhoa(khoa.getTenKhoa());
                             break;
                         }
                     }
                     lstReturn.add(temp);
+                    break;
                 }
             }
         }
-
         return lstReturn;
     }
 
     @Override
-    public Map<Long, String> getTenBoMonBy() {
-        List<BoMon> lst = (List<BoMon>) boMonRepository.findAll();
+    public Map<Long, String> getTenKhoaBy() {
+        List<Khoa> lst = (List<Khoa>) khoaRepository.findAll();
         Map<Long, String> map = new HashMap<>();
-        lst.forEach((boMon) -> {
-            map.put(boMon.getId(), boMon.getTenBoMon());
+        lst.forEach((khoa) -> {
+            map.put(khoa.getId(), khoa.getTenKhoa());
         });
         return map;
+    }
+    @Override
+    public MonHoc findByTenMon(String tenMon) {
+        return monHocRepository.findByTenMon(tenMon);
+    }
+
+    @Override
+    public List<MonHoc> findByIdKhoa(Long idKhoa) {
+        return monHocRepository.findByIdKhoa(idKhoa);
     }
 
 }

@@ -18,4 +18,6 @@ public interface TongHopRepositoryCustom {
 
     List<TongHop> search(TongHop tongHop);
 
+    int deleteFromObjectId(Long objectId);
+    
 }

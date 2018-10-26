@@ -89,18 +89,20 @@ public class UserTongHopController {
         //Số tiết giảm trừ
         Long soTietGiamTru = 0l;
         String giamTruString = gv.getGiamTru();
-        Long dinhMucGG = getDinhMucGioGiang(gv.getId());
-        String[] lstGiamTru = giamTruString.split(";");
-        for (int i = 0; i < lstGiamTru.length; i++) {
-            TbdMienGiam mienGiam = mienGiamService.findById(Long.parseLong(lstGiamTru[i]));
-            if (mienGiam.getSoTietGiam() != null) {
-                soTietGiamTru += mienGiam.getSoTietGiam();
-            }
-            if (mienGiam.getTyLe() != null) {
-                soTietGiamTru += Math.round(dinhMucGG * mienGiam.getTyLe() / 100);
-            }
-            if (soTietGiamTru >= Math.round(dinhMucGG * 0.5)) {
-                soTietGiamTru = Math.round(dinhMucGG * 0.5);
+        if (giamTruString != null) {
+            String[] lstGiamTru = giamTruString.split(",");
+            Long dinhMucGG = getDinhMucGioGiang(gv.getId());
+            for (int i = 0; i < lstGiamTru.length; i++) {
+                TbdMienGiam mienGiam = mienGiamService.findById(Long.parseLong(lstGiamTru[i]));
+                if (mienGiam.getSoTietGiam() != null) {
+                    soTietGiamTru += mienGiam.getSoTietGiam();
+                }
+                if (mienGiam.getTyLe() != null) {
+                    soTietGiamTru += Math.round(dinhMucGG * mienGiam.getTyLe() / 100);
+                }
+                if (soTietGiamTru >= Math.round(dinhMucGG * 0.5)) {
+                    soTietGiamTru = Math.round(dinhMucGG * 0.5);
+                }
             }
         }
         tongHop.setSoTietGiamTru(soTietGiamTru);

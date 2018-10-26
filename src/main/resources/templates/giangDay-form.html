@@ -37,19 +37,24 @@
                                             </option>
                                         </select>
                                     </div>
-
                                     <div class="form-group">
-                                        <label>Tên môn</label> 
-                                        <input type="text" class="form-control"
-                                               th:field="*{tenMon}" placeholder=" " />   
+                                        <label>Môn học</label> 
+                                        <select th:if="${giangDay.tenMon==null}" th:field="*{tenMon}" class="form-control">
+                                            <option value=""> --Chọn-- </option>
+                                            <option th:each="entry : ${monHocMap.entrySet()}"
+                                                    th:value="${entry.key}"
+                                                    th:utext="${entry.value}">
+                                            </option>
+                                        </select> 
+                                        <select th:unless="${giangDay.tenMon==null}" th:field="*{tenMon}" class="form-control">
+                                            <option th:each="entry : ${monHocMap.entrySet()}"
+                                                    th:value="${entry.key}"
+                                                    th:utext="${entry.value}"
+                                                    th:selected="${giangDay.tenMon==entry.key}">
+                                            </option>
+                                        </select>
                                     </div>
 
-
-                                    <div class="form-group">
-                                        <label>ĐVHT/TC</label> 
-                                        <input type="text" class="form-control"
-                                               th:field="*{dvhtTc}" placeholder=" "/>   
-                                    </div>
 
                                     <div class="form-group">
                                         <label>Lớp</label> 

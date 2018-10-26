@@ -57,13 +57,6 @@ public class UserController {
         return "login";
     }
 
-//    @RequestMapping("/user/tongHop")
-//    public String home(Model model) {
-//        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-//        GiangVien giangVien = giangVienService.findByUsername(username);
-//        logger.info("user/tongHop");
-//        return "user/tongHop";
-//    }
 
     @RequestMapping("/khoa")
     public String helloAdmin(Model model) {

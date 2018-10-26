@@ -34,29 +34,31 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @Controller
 @ComponentScan
 public class UserHdTotNghiepController {
-    
+
     private static final Logger logger = LoggerFactory.getLogger(UserHdTotNghiepController.class);
     @Autowired
     HdTotNghiepService hdTotNghiepService;
-    
+
     @Autowired
     GiangVienService giangVienService;
     GiangVien giangVien;
+    String namHocNay = DateUtil.getNamHoc(DateUtil.now(), 0);
 
-    
     @RequestMapping("/user-hdTotNghiep")
-    public String statistic(Model model){
+    public String statistic(Model model) {
         giangVien = giangVienService.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
-        model.addAttribute("hdTotNghieps", hdTotNghiepService.findByObjectId(giangVien.getId(),DateUtil.getNamHoc(DateUtil.now(),0)));
+        model.addAttribute("hdTotNghieps", hdTotNghiepService.findByObjectId(giangVien.getId(), DateUtil.getNamHoc(DateUtil.now(), 0)));
         return "user-hdTotNghiep";
     }
-    
+
     @PostMapping("/user-hdTotNghiep/save")
     public String save(@Valid TbdHdTotNghiep hdTotNghiep, BindingResult result, RedirectAttributes redirect) {
         if (result.hasErrors()) {
             return "user-hdTotNghiep-form";
         }
         hdTotNghiep.setIsDeleted(Constants.SetDelete.NOT_DELETE);
+        hdTotNghiep.setNamHoc(namHocNay);
+        hdTotNghiep.setObjectId(giangVien.getId());
         hdTotNghiepService.save(hdTotNghiep);
         redirect.addFlashAttribute("success", "Thành công!!!");
         return "redirect:/user-hdTotNghiep";
@@ -73,7 +75,7 @@ public class UserHdTotNghiepController {
     }
 
     @GetMapping("/user-hdTotNghiep/{id}/edit")
-    public String edit(@PathVariable Long id,Model model) {
+    public String edit(@PathVariable Long id, Model model) {
         model.addAttribute("hdTotNghiep", hdTotNghiepService.findById(id));
         return "user-hdTotNghiep-form";
     }
@@ -84,5 +86,5 @@ public class UserHdTotNghiepController {
         redirect.addFlashAttribute("success", "Thành công!!!");
         return "redirect:/user-hdTotNghiep";
     }
-    
+
 }

@@ -28,4 +28,6 @@ public interface BoMonService {
     List<BoMon> search(String string);
     
     Map<Long,String> getTenKhoaBy();
+    
+    Boolean findByIdKhoa(Long idKhoa);
 }

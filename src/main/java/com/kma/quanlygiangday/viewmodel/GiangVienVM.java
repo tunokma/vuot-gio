@@ -28,7 +28,7 @@ public class GiangVienVM {
     private Long role;
     private String dinhMucGG;
     private Long mucTtChuan;
-
+    private Long chuNhiem;
     private String tenBoMon;
     private String hocHamText;
 
@@ -51,6 +51,7 @@ public class GiangVienVM {
         this.email = giangVien.getEmail();
         this.dinhMucGG = giangVien.getDinhMucGG();
         this.mucTtChuan = giangVien.getMucTtChuan();
+        this.chuNhiem = giangVien.getChuNhiem();
     }
 
     public Long getId() {
@@ -67,6 +68,14 @@ public class GiangVienVM {
 
     public void setHoTen(String hoTen) {
         this.hoTen = hoTen;
+    }
+
+    public Long getChuNhiem() {
+        return chuNhiem;
+    }
+
+    public void setChuNhiem(Long chuNhiem) {
+        this.chuNhiem = chuNhiem;
     }
 
     public Long getNamSinh() {

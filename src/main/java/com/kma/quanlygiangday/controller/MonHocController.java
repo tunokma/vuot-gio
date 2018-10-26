@@ -50,15 +50,15 @@ public class MonHocController {
         }
         MonHoc monHoc = new MonHoc(monHocVM);
         monHocService.save(monHoc);
-        redirect.addFlashAttribute("success", "Saved successfully!");
+        redirect.addFlashAttribute("success", "Thành công!");
         return "redirect:/monHoc";
     }
 
     @GetMapping("/monHoc/create")
     public String create(Model model) {
         model.addAttribute("monHocVM", new MonHocVM());
-        Map<Long, String> mapTenBoMon = monHocService.getTenBoMonBy();
-        model.addAttribute("mapTenBoMon", mapTenBoMon);
+        Map<Long, String> mapTenKhoa = monHocService.getTenKhoaBy();
+        model.addAttribute("mapTenKhoa", mapTenKhoa);
         return "monHoc-form";
     }
 
@@ -66,15 +66,15 @@ public class MonHocController {
     public String edit(@PathVariable Long id, Model model) {
         MonHocVM monHocVM = new MonHocVM(monHocService.findById(id));
         model.addAttribute("monHocVM", monHocVM);
-        Map<Long, String> mapTenBoMon = monHocService.getTenBoMonBy();
-        model.addAttribute("mapTenBoMon", mapTenBoMon);
+        Map<Long, String> mapTenKhoa = monHocService.getTenKhoaBy();
+        model.addAttribute("mapTenKhoa", mapTenKhoa);
         return "monHoc-form";
     }
 
     @GetMapping("/monHoc/{id}/delete")
     public String delete(@PathVariable Long id, RedirectAttributes redirect) {
         monHocService.delete(id);
-        redirect.addFlashAttribute("success", "Xóa boMon thành công!");
+        redirect.addFlashAttribute("success", "Thành công!");
         return "redirect:/monHoc";
     }
 
@@ -84,7 +84,7 @@ public class MonHocController {
             return "redirect:/monHoc";
         }
 
-        model.addAttribute("monHocs", boMonService.search(s));
+        model.addAttribute("monHocs", monHocService.search(s));
         return "monHoc";
     }
 

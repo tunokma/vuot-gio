@@ -28,5 +28,9 @@ public interface MonHocService {
     
     List<MonHocVM> search(String string);
     
-    Map<Long,String> getTenBoMonBy();
+    Map<Long,String> getTenKhoaBy();
+    
+    List<MonHoc> findByIdKhoa(Long idKhoa);
+    
+    MonHoc findByTenMon(String tenMon);
 }

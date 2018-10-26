@@ -56,7 +56,7 @@ public class BoMonController {
             return "boMon-form";
         }
         boMonService.save(boMon);
-        redirect.addFlashAttribute("success", "Saved boMon successfully!");
+        redirect.addFlashAttribute("success", "Thành công!");
         return "redirect:/boMon";
     }
 
@@ -79,7 +79,7 @@ public class BoMonController {
     @GetMapping("/boMon/{id}/delete")
     public String delete(@PathVariable Long id, RedirectAttributes redirect) {
         boMonService.delete(id);
-        redirect.addFlashAttribute("success", "Xóa boMon thành công!");
+        redirect.addFlashAttribute("success", "Thành công!");
         return "redirect:/boMon";
     }
 

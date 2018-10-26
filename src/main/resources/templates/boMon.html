@@ -12,7 +12,30 @@
                 <div class="container">
                     <div class="content-container clearfix">
                         <div class="row">
-                            <h3 class="text-center">Quản lý bộ môn</h3>
+                            <div class="row">
+                                <h3 class="text-center">Quản lý chung(bộ môn)</h3>
+                            </div>
+
+                            <div class="col-sm-4"></div>
+                            <div class="col-sm-4" id="bs-example-navbar-collapse">
+                                <ul class="nav navbar-nav navbar-center">
+                                    <li class='col-sm-4'>
+                                        <a class="btn icon-btn " th:href="@{/khoa}">
+                                            Khoa
+                                        </a>
+                                    </li>                
+                                    <li class='col-sm-4'>
+                                        <a class="btn icon-btn " th:href="@{/boMon}">
+                                            Bộ môn
+                                        </a>
+                                    </li>                
+                                    <li class='col-sm-4'>
+                                        <a class="btn icon-btn " th:href="@{/monHoc}">
+                                            Môn học
+                                        </a>
+                                    </li>               
+                                </ul>
+                            </div>
                         </div>
                         <div th:if="${success}"
                              class="row alert alert-success alert-dismissible">
