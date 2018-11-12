@@ -6,11 +6,8 @@
 package com.kma.quanlygiangday.controller;
 
 import com.kma.quanlygiangday.model.BoMon;
-import com.kma.quanlygiangday.model.Khoa;
 import com.kma.quanlygiangday.service.BoMonService;
 import com.kma.quanlygiangday.service.KhoaService;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import javax.validation.Valid;
 import org.slf4j.Logger;

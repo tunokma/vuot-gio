@@ -30,4 +30,6 @@ public interface BoMonService {
     Map<Long,String> getTenKhoaBy();
     
     Boolean findByIdKhoa(Long idKhoa);
+    
+    List<BoMon> getListByIdKhoa(Long idKhoa);
 }

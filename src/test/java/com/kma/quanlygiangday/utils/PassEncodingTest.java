@@ -5,13 +5,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
-/**
- * The Password Encoding Test class
- *
- * @author ibrahim KARAYEL
- * @version 1.0
- * Date 4/27/2018.
- */
+
 public class PassEncodingTest {
 
     public static BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();

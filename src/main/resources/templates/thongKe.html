@@ -39,7 +39,8 @@
                                                 <option value=""> --Chọn-- </option>
                                                 <option th:each="entry : ${khoaMap.entrySet()}"
                                                         th:value="${entry.key}"
-                                                        th:utext="${entry.value}">
+                                                        th:utext="${entry.value}"
+                                                        th:selected="${searchKhoa==entry.key}">
                                                 </option>
                                             </select>
                                         </div>

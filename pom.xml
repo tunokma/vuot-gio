@@ -5,23 +5,10 @@
 
     <groupId>com.kma</groupId>
     <artifactId>quanlygiangday</artifactId>
-    <packaging>jar</packaging>
+    <packaging>war</packaging>
     <version>0.0.1-SNAPSHOT</version>
     <name>QuanLyGiangDay</name>
     <description>Quan ly giang day</description>
-
-    <!--    <developers>
-        <developer>
-            <name>ibrahim</name>
-            <email>ibrahm.karayel@gmail.com</email>
-            <url>https://github.com/ibrahimkarayel</url>
-        </developer>
-    </developers>
-    <scm>
-        <url>https://github.com/ibrahimkarayel/task-boot</url>
-        <connection>scm:git:git:https://github.com/ibrahimkarayel/task-boot.git</connection>
-        <developerConnection>scm:git:git@github.com/ibrahimkarayel/task-boot.git</developerConnection>
-    </scm>-->
 
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -36,7 +23,12 @@
     </properties>
 
     <dependencies>
-
+        <!-- marked the embedded servlet container as provided -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-tomcat</artifactId>
+            <scope>provided</scope>
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>
@@ -85,6 +77,22 @@
             <groupId>org.apache.poi</groupId>
             <artifactId>poi</artifactId>
             <version>3.9</version>
+        </dependency>
+        <dependency>
+            <groupId>org.docx4j</groupId>
+            <artifactId>docx4j</artifactId>
+            <version>3.2.1</version>
+            <type>jar</type>
+        </dependency>
+        <dependency>
+            <groupId>pl.jsolve</groupId>
+            <artifactId>templ4docx</artifactId>
+            <version>2.0.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.wickedsource</groupId>
+            <artifactId>docx-stamper</artifactId>
+            <version>1.2.2</version>
         </dependency>
         <dependency>
             <groupId>org.apache.poi</groupId>

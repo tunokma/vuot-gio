@@ -96,4 +96,9 @@ public class BoMonServiceImpl implements BoMonService {
         return !(lst == null || lst.isEmpty());
     }
 
+    @Override
+    public List<BoMon> getListByIdKhoa(Long idKhoa) {
+        return boMonRepository.findByIdKhoa(idKhoa);
+    }
+
 }

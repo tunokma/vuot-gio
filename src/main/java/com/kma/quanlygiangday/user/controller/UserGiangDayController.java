@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
@@ -52,7 +53,6 @@ public class UserGiangDayController {
 
     //<editor-fold defaultstate="collapsed" desc="loadComponent">
     public void loadNamHoc() {
-        namHocNay = DateUtil.getNamHoc(DateUtil.now(), 0);
         namHocMap.clear();
         namHocMap.put(DateUtil.getNamHoc(DateUtil.now(), 4), DateUtil.getNamHoc(DateUtil.now(), 4));
         namHocMap.put(DateUtil.getNamHoc(DateUtil.now(), 3), DateUtil.getNamHoc(DateUtil.now(), 3));
@@ -72,12 +72,25 @@ public class UserGiangDayController {
     //<editor-fold defaultstate="collapsed" desc="mapping">
     @RequestMapping("/user-giangDay")
     public String statistic(Model model) {
+        namHocNay = DateUtil.getNamHoc(DateUtil.now(), 0);
         loadMap();
+        loadNamHoc();
         giangVien = giangVienService.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
-        model.addAttribute("giangDays", giangDayService.findByObjectId(giangVien.getId(), DateUtil.getNamHoc(DateUtil.now(), 0)));
+        model.addAttribute("giangDays", giangDayService.findByObjectId(giangVien.getId(), namHocNay));
+        model.addAttribute("namHocMap", namHocMap);
+        model.addAttribute("namHocNay", namHocNay);
         return "user-giangDay";
     }
 
+     @GetMapping("/user-giangDay/search")
+    public String search(@RequestParam("namHoc") String namHoc, Model model) {
+        namHocNay = namHoc;
+        model.addAttribute("giangDays", giangDayService.findByObjectId(giangVien.getId(), namHocNay));
+        model.addAttribute("namHocMap", namHocMap);
+        model.addAttribute("namHocNay", namHocNay);
+        return "user-giangDay";
+    }
+    
     @PostMapping("/user-giangDay/save")
     public String save(@Valid TbdGiangDay giangDay, BindingResult result, RedirectAttributes redirect) {
         if (result.hasErrors()) {

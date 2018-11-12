@@ -26,9 +26,35 @@
                             <span th:text="${success}"></span>
                         </div>
                         <div class="row">
-                            <a th:href="@{/user-giangDay/create}" class="btn btn-success pull-left">
-                                <span class="glyphicon glyphicon-plus"></span> Thêm giảng dạy
-                            </a>
+                            <div class="col-md-3"></div>
+                            <div class="col-md-6">
+
+                                <form  action="#" class=""
+                                       th:action="@{/user-giangDay/search}" method="GET">
+                                    <div class="row row-space">
+                                        <div class="col-md-5 text-right">
+                                            <label>Năm học</label>
+                                        </div>
+                                        <div class="col-md-4 col-form-control">
+                                            <select name="namHoc" class="form-control">
+                                                <option th:each="entry : ${namHocMap.entrySet()}"
+                                                        th:value="${entry.key}"
+                                                        th:utext="${entry.value}"
+                                                        th:selected="${namHocNay==entry.key}">
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="float-right btn-send">
+                                        <button type="submit" class="btn btn-success btn-custom">Tìm kiếm</button>
+                                        <a th:href="@{/user-giangDay/create}" class="btn btn-success">
+                                            <span class="glyphicon glyphicon-plus"></span> Thêm giảng dạy
+                                        </a>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="col-md-3"></div>
+
                         </div>
                         <span class="help-block"></span>
                         <div class="row">

@@ -28,7 +28,6 @@ public class MyAuthenticationSuccessHandler extends SimpleUrlAuthenticationSucce
     protected void handle(HttpServletRequest request,
                           HttpServletResponse response, Authentication authentication) throws IOException {
         String targetUrl = determineTargetUrl(authentication);
-        System.out.println("handle: " + targetUrl);
 
         if (response.isCommitted()) {
             logger.warn("Can't redirect");
@@ -43,7 +42,6 @@ public class MyAuthenticationSuccessHandler extends SimpleUrlAuthenticationSucce
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
         List<String> roles = new ArrayList<>();
         for (GrantedAuthority a : authorities) {
-            System.out.println("Authority: " + a.getAuthority());
             roles.add(a.getAuthority());
         }
 

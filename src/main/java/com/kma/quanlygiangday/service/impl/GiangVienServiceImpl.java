@@ -123,4 +123,19 @@ public class GiangVienServiceImpl implements GiangVienService {
         return giangVienRepository.findByUsername(username);
     }
 
+    @Override
+    public Boolean isChuNhiemKhoa(Long idGiangVien) {
+        return giangVienRepository.findChuNhiemKhoa(idGiangVien);
+    }
+
+    @Override
+    public Boolean isChuNhiemBoMon(Long idGiangVien) {
+        return giangVienRepository.findChuNhiemBoMon(idGiangVien);
+    }
+
+    @Override
+    public List<GiangVien> findByIdBoMon(Long idBoMon) {
+        return giangVienRepository.findByIdBoMon(idBoMon);
+    }
+
 }

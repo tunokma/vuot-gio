@@ -86,9 +86,10 @@ public class ThongKeController {
     List<ThongKeVM> lstThongKe;
     List<TongHop> lstTongHop;
     String namHocNay;
-    
+    String searchNamHoc, searchKhoa;
+    boolean isSearch = false;
 //<editor-fold defaultstate="collapsed" desc="mapping">
-    
+
     public void loadNamHoc() {
         namHocNay = DateUtil.getNamHoc(DateUtil.now(), 0);
         namHocMap.clear();
@@ -98,7 +99,7 @@ public class ThongKeController {
         namHocMap.put(DateUtil.getNamHoc(DateUtil.now(), 1), DateUtil.getNamHoc(DateUtil.now(), 1));
         namHocMap.put(namHocNay, namHocNay);
     }
-    
+
     public void loadMap() {
         soTietDMMap.clear();
         soTietDMMap.put(Constants.DINH_MUC_GIANG_DAY.CHUYEN_MON, Constants.SO_TIET.CHUYEN_MON);
@@ -106,7 +107,7 @@ public class ThongKeController {
         soTietDMMap.put(Constants.DINH_MUC_GIANG_DAY.CHUYEN_MON_THAI_SAN, Constants.SO_TIET.CHUYEN_MON_THAI_SAN);
         soTietDMMap.put(Constants.DINH_MUC_GIANG_DAY.CO_BAN_THAI_SAN, Constants.SO_TIET.CO_BAN_THAI_SAN);
     }
-    
+
     public void loadKhoaMap() {
         khoaMap.clear();
         List<Khoa> lstKhoa = khoaService.findAll();
@@ -122,11 +123,11 @@ public class ThongKeController {
     @RequestMapping("/thongKe")
     public String thongKe(Model model) {
         logger.info("/thongKe");
+        loadKhoaMap();
+        loadNamHoc();
         lstThongKe = new ArrayList<>();
         lstTongHop = tongHopService.findAll();
         getListThongKe(lstTongHop);
-        loadKhoaMap();
-        loadNamHoc();
         model.addAttribute("khoaMap", khoaMap);
         model.addAttribute("namHocMap", namHocMap);
         model.addAttribute("thongKes", lstThongKe);
@@ -139,6 +140,7 @@ public class ThongKeController {
         if ("".equals(namHoc) && (khoa == null)) {
             return "redirect:/thongKe";
         }
+        isSearch = true;
         TongHop tongHop = new TongHop();
         tongHop.setNamHoc(namHoc);
         tongHop.setIdKhoa(khoa);
@@ -150,7 +152,10 @@ public class ThongKeController {
         model.addAttribute("khoaMap", khoaMap);
         model.addAttribute("thongKes", lstThongKe);
         namHocNay = namHoc;
+        searchKhoa = khoaMap.get(khoa);
+        searchNamHoc = namHoc;
         model.addAttribute("namHocNay", namHocNay);
+        model.addAttribute("searchKhoa", khoa);
         return "thongKe";
     }
 
@@ -224,7 +229,7 @@ public class ThongKeController {
             beans.put("tong", tong);
             beans.put("thucLinh", thucLinh);
             beans.put("thue", thue);
-            beans.put("tieuChi", "HỌC VIỆN KỸ THUẬT MẬT MÃ");
+            beans.put("tieuChi", searchKhoa != null ? searchKhoa : "HỌC VIỆN KỸ THUẬT MẬT MÃ");
             beans.put("namHoc", lstThongKe.get(0).getNamHoc());
             String fileString = "vuot_gio_" + lstThongKe.get(0).getNamHoc();
             //Lưu file vào bộ nhớ trên server
@@ -294,18 +299,37 @@ public class ThongKeController {
                 List<TbdGiangDay> lstGiangDay = giangDayService.findByObjectId(tongHop.getObjectId(), namHocNay);
                 thongKeVM.fromTongHop(tongHop);
                 for (TbdGiangDay tbdGiangDay : lstGiangDay) {
-                    if (tbdGiangDay.getHkCn().equals(Constants.HocKy_ChuyenNganh.HOC_KY_1_AT)) {
-                        thongKeVM.sethK1_AT(tbdGiangDay.getTietTg());
+                    if (tbdGiangDay.getTietTg() != null) {
+                        if (tbdGiangDay.getHkCn().equals(Constants.HocKy_ChuyenNganh.HOC_KY_1_AT)) {
+                            if (null == thongKeVM.gethK1_AT()) {
+                                thongKeVM.sethK1_AT(tbdGiangDay.getTietTg());
+                            } else {
+                                thongKeVM.sethK1_AT(thongKeVM.gethK1_AT() + tbdGiangDay.getTietTg());
+                            }
+                        }
+                        if (tbdGiangDay.getHkCn().equals(Constants.HocKy_ChuyenNganh.HOC_KY_1_MM)) {
+                            if (null == thongKeVM.gethK1_MM()) {
+                                thongKeVM.sethK1_MM(tbdGiangDay.getTietTg());
+                            } else {
+                                thongKeVM.sethK1_MM(thongKeVM.gethK1_MM() + tbdGiangDay.getTietTg());
+                            }
+                        }
+                        if (tbdGiangDay.getHkCn().equals(Constants.HocKy_ChuyenNganh.HOC_KY_2_AT)) {
+                            if (null == thongKeVM.gethK2_AT()) {
+                                thongKeVM.sethK2_AT(tbdGiangDay.getTietTg());
+                            } else {
+                                thongKeVM.sethK2_AT(thongKeVM.gethK2_AT() + tbdGiangDay.getTietTg());
+                            }
+                        }
+                        if (tbdGiangDay.getHkCn().equals(Constants.HocKy_ChuyenNganh.HOC_KY_2_MM)) {
+                            if (null == thongKeVM.gethK2_MM()) {
+                                thongKeVM.sethK2_MM(tbdGiangDay.getTietTg());
+                            } else {
+                                thongKeVM.sethK2_MM(thongKeVM.gethK2_MM() + tbdGiangDay.getTietTg());
+                            }
+                        }
                     }
-                    if (tbdGiangDay.getHkCn().equals(Constants.HocKy_ChuyenNganh.HOC_KY_1_MM)) {
-                        thongKeVM.sethK1_MM(tbdGiangDay.getTietTg());
-                    }
-                    if (tbdGiangDay.getHkCn().equals(Constants.HocKy_ChuyenNganh.HOC_KY_2_AT)) {
-                        thongKeVM.sethK2_AT(tbdGiangDay.getTietTg());
-                    }
-                    if (tbdGiangDay.getHkCn().equals(Constants.HocKy_ChuyenNganh.HOC_KY_2_MM)) {
-                        thongKeVM.sethK2_MM(tbdGiangDay.getTietTg());
-                    }
+
                 }
 
                 //Lấy số tiết hdtn

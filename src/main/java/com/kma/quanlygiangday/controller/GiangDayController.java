@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
@@ -55,7 +56,6 @@ public class GiangDayController {
     String namHocNay;
 
     public void loadNamHoc() {
-        namHocNay = DateUtil.getNamHoc(DateUtil.now(), 0);
         namHocMap.clear();
         namHocMap.put(DateUtil.getNamHoc(DateUtil.now(), 4), DateUtil.getNamHoc(DateUtil.now(), 4));
         namHocMap.put(DateUtil.getNamHoc(DateUtil.now(), 3), DateUtil.getNamHoc(DateUtil.now(), 3));
@@ -80,12 +80,26 @@ public class GiangDayController {
 
     @RequestMapping("/giangVien/{objectId}/statistic/giangDay")
     public String statistic(@PathVariable Long objectId, Model model) {
+        namHocNay = DateUtil.getNamHoc(DateUtil.now(), 0);
         loadMap();
-        model.addAttribute("giangDays", giangDayService.findByObjectId(objectId, DateUtil.getNamHoc(DateUtil.now(), 0)));
+        loadNamHoc();
+        model.addAttribute("giangDays", giangDayService.findByObjectId(objectId, namHocNay));
         model.addAttribute("objectId", objectId);
+        model.addAttribute("namHocMap", namHocMap);
+        model.addAttribute("namHocNay", namHocNay);
         return "giangDay";
     }
 
+    @GetMapping("/giangVien/{objectId}/statistic/giangDay/search")
+    public String search(@RequestParam("namHoc") String namHoc,@PathVariable Long objectId, Model model) {
+        namHocNay = namHoc;
+        model.addAttribute("giangDays", giangDayService.findByObjectId(objectId, namHocNay));
+        model.addAttribute("objectId", objectId);
+        model.addAttribute("namHocMap", namHocMap);
+        model.addAttribute("namHocNay", namHocNay);
+        return "giangDay";
+    }
+    
     @PostMapping("/giangVien/{objectId}/statistic/giangDay/save")
     public String save(@Valid TbdGiangDay giangDay, BindingResult result, RedirectAttributes redirect) {
         if (result.hasErrors()) {

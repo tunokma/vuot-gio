@@ -13,9 +13,14 @@ import java.util.List;
  * @author Tuno
  */
 public interface GiangVienRepositoryCustom {
-    
+
     List<GiangVien> findAllGV();
-    
+
     List<GiangVien> findByfindByNameContaining(String string);
+
+    Boolean findChuNhiemKhoa(Long idGiangVien);
+
+    Boolean findChuNhiemBoMon(Long idGiangVien);
     
+    List<GiangVien> findByIdBoMon(Long idBoMon);
 }

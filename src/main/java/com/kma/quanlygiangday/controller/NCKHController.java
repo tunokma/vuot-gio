@@ -9,6 +9,8 @@ import com.kma.quanlygiangday.model.TbdNckh;
 import com.kma.quanlygiangday.service.NCKHService;
 import com.kma.quanlygiangday.utils.Constants;
 import com.kma.quanlygiangday.utils.DateUtil;
+import java.util.HashMap;
+import java.util.Map;
 import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,6 +23,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
@@ -34,18 +37,43 @@ public class NCKHController {
     private static final Logger logger = LoggerFactory.getLogger(NCKHController.class);
     @Autowired
     NCKHService nckhService;
-    String namHocNay = DateUtil.getNamHoc(DateUtil.now(), 0);
+    String namHocNay;
+    Map<String, String> namHocMap = new HashMap<>();
+
+    public void loadNamHoc() {
+        namHocMap.clear();
+        namHocMap.put(DateUtil.getNamHoc(DateUtil.now(), 4), DateUtil.getNamHoc(DateUtil.now(), 4));
+        namHocMap.put(DateUtil.getNamHoc(DateUtil.now(), 3), DateUtil.getNamHoc(DateUtil.now(), 3));
+        namHocMap.put(DateUtil.getNamHoc(DateUtil.now(), 2), DateUtil.getNamHoc(DateUtil.now(), 2));
+        namHocMap.put(DateUtil.getNamHoc(DateUtil.now(), 1), DateUtil.getNamHoc(DateUtil.now(), 1));
+        namHocMap.put(namHocNay, namHocNay);
+    }
+    
     @RequestMapping("/giangVien/{objectId}/statistic/NCKH")
     public String statistic(@PathVariable Long objectId, Model model){
-        model.addAttribute("nckhs", nckhService.findByObjectId(objectId,DateUtil.getNamHoc(DateUtil.now(),0)));
+        namHocNay = DateUtil.getNamHoc(DateUtil.now(), 0);
+        loadNamHoc();
+        model.addAttribute("nckhs", nckhService.findByObjectId(objectId,namHocNay));
         model.addAttribute("objectId",objectId);
+        model.addAttribute("namHocMap", namHocMap);
+        model.addAttribute("namHocNay", namHocNay);
+        return "NCKH";
+    }
+    
+    @GetMapping("/giangVien/{objectId}/statistic/NCKH/search")
+    public String search(@RequestParam("namHoc") String namHoc, @PathVariable Long objectId, Model model) {
+        namHocNay = namHoc;
+        model.addAttribute("giangDays", nckhService.findByObjectId(objectId, namHocNay));
+        model.addAttribute("objectId", objectId);
+        model.addAttribute("namHocMap", namHocMap);
+        model.addAttribute("namHocNay", namHocNay);
         return "NCKH";
     }
     
     @PostMapping("/giangVien/{objectId}/statistic/NCKH/save")
     public String save(@Valid TbdNckh nckh, BindingResult result, RedirectAttributes redirect) {
         if (result.hasErrors()) {
-            return "nckh-form";
+            return "NCKH-form";
         }
         nckh.setIsDeleted(Constants.SetDelete.NOT_DELETE);
         nckh.setNamHoc(namHocNay);
@@ -62,14 +90,14 @@ public class NCKHController {
         model.addAttribute("nckh", tbdNckh);
         model.addAttribute("objectId", objectId);
         model.addAttribute("msg", "create");
-        return "nckh-form";
+        return "NCKH-form";
     }
 
     @GetMapping("/giangVien/{objectId}/statistic/NCKH/{id}/edit")
     public String edit(@PathVariable Long id, @PathVariable Long objectId, Model model) {
         model.addAttribute("nckh", nckhService.findById(id));
         model.addAttribute("objectId", objectId);
-        return "nckh-form";
+        return "NCKH-form";
     }
 
     @GetMapping("/giangVien/{objectId}/statistic/NCKH/{id}/delete")

@@ -1,13 +1,13 @@
 package com.kma.quanlygiangday.controller;
 
+import com.kma.quanlygiangday.model.GiangVien;
+import com.kma.quanlygiangday.service.GiangVienService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
-import com.kma.quanlygiangday.model.User;
-import com.kma.quanlygiangday.service.UserService;
 
 
 @Component
@@ -15,14 +15,14 @@ import com.kma.quanlygiangday.service.UserService;
 public class GlobalController {
 
     @Autowired
-    private UserService userService;
+    private GiangVienService userService;
 
-    private User loginUser;
+    private GiangVien loginUser;
 
-    public User getLoginUser() {
+    public GiangVien getLoginUser() {
         if (loginUser == null) {
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-            loginUser = userService.findByUserName(auth.getName());
+            loginUser = userService.findByUsername(auth.getName());
         }
         return loginUser;
     }

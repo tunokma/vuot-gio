@@ -15,21 +15,26 @@ import java.util.Map;
  * @author Tuno
  */
 public interface GiangVienService {
-    
+
     GiangVien save(GiangVien giangVien);
-    
+
     Boolean delete(Long id);
-    
+
     GiangVien update(GiangVien giangVien);
-    
+
     GiangVien findById(Long id);
-    
+
     GiangVien findByUsername(String username);
-    
+
     List<GiangVienVM> findAll();
-    
+
     List<GiangVienVM> search(String string);
-    
-    Map<Long,String> getBoMon();
-    
+
+    List<GiangVien> findByIdBoMon(Long idBoMon);
+
+    Map<Long, String> getBoMon();
+
+    Boolean isChuNhiemKhoa(Long idGiangVien);
+
+    Boolean isChuNhiemBoMon(Long idGiangVien);
 }

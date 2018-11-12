@@ -50,9 +50,6 @@ public class NCKHServiceImpl implements NCKHService {
 
     @Override
     public List<TbdNckh> findByObjectId(Long id, String namHoc) {
-        if (nCKHRepository.findByObjectId(id, namHoc).isEmpty()) {
-            return null;
-        }
         return nCKHRepository.findByObjectId(id, namHoc);
     }
 

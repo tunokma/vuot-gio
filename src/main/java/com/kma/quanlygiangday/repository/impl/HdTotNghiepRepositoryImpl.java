@@ -48,6 +48,9 @@ public class HdTotNghiepRepositoryImpl implements HdTotNghiepRepositoryCustom {
         query.setParameter("objectId", objectId);
         query.setParameter("namHoc", namHoc);
         soTiet = (Long) query.getSingleResult();
+        if(null==soTiet){
+            soTiet = 0l;
+        }
         return soTiet;
     }
 

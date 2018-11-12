@@ -8,11 +8,17 @@ package com.kma.quanlygiangday.controller;
 import com.kma.quanlygiangday.model.BoMon;
 import com.kma.quanlygiangday.model.GiangVien;
 import com.kma.quanlygiangday.model.TbdMienGiam;
+import com.kma.quanlygiangday.model.TbdNckh;
+import com.kma.quanlygiangday.model.TongHop;
 import com.kma.quanlygiangday.service.BoMonService;
 import com.kma.quanlygiangday.service.GiangDayService;
 import com.kma.quanlygiangday.service.GiangVienService;
+import com.kma.quanlygiangday.service.HdTotNghiepService;
 import com.kma.quanlygiangday.service.MienGiamService;
+import com.kma.quanlygiangday.service.NCKHService;
+import com.kma.quanlygiangday.service.TongHopService;
 import com.kma.quanlygiangday.utils.Constants;
+import com.kma.quanlygiangday.utils.DateUtil;
 import com.kma.quanlygiangday.utils.PassEncoding;
 import com.kma.quanlygiangday.utils.Roles;
 import com.kma.quanlygiangday.viewmodel.GiangVienVM;
@@ -51,6 +57,15 @@ public class GiangVienController {
     GiangDayService giangDayService;
 
     @Autowired
+    HdTotNghiepService hdTotNghiepService;
+
+    @Autowired
+    NCKHService nckhService;
+
+    @Autowired
+    TongHopService tongHopService;
+
+    @Autowired
     MienGiamService mienGiamService;
 
     @Autowired
@@ -60,6 +75,7 @@ public class GiangVienController {
     Map<String, String> soTietDMMap = new HashMap<>();
     Map<Long, String> giamTruMap = new HashMap<>();
     Map<Long, String> chuNhiemMap = new HashMap<>();
+    Map<String, Long> soTietDMMap2 = new HashMap<>();
 
 //<editor-fold defaultstate="collapsed" desc="load">
     public void loadMap() {
@@ -68,6 +84,13 @@ public class GiangVienController {
         soTietDMMap.put(Constants.DINH_MUC_GIANG_DAY.CO_BAN, Constants.DINH_MUC_GIANG_DAY.CO_BAN_TEXT);
         soTietDMMap.put(Constants.DINH_MUC_GIANG_DAY.CHUYEN_MON_THAI_SAN, Constants.DINH_MUC_GIANG_DAY.CHUYEN_MON_THAI_SAN_TEXT);
         soTietDMMap.put(Constants.DINH_MUC_GIANG_DAY.CO_BAN_THAI_SAN, Constants.DINH_MUC_GIANG_DAY.CO_BAN_THAI_SAN_TEXT);
+    }
+
+    public void loadMap2() {
+        soTietDMMap2.put(Constants.DINH_MUC_GIANG_DAY.CHUYEN_MON, Constants.SO_TIET.CHUYEN_MON);
+        soTietDMMap2.put(Constants.DINH_MUC_GIANG_DAY.CO_BAN, Constants.SO_TIET.CO_BAN);
+        soTietDMMap2.put(Constants.DINH_MUC_GIANG_DAY.CHUYEN_MON_THAI_SAN, Constants.SO_TIET.CHUYEN_MON_THAI_SAN);
+        soTietDMMap2.put(Constants.DINH_MUC_GIANG_DAY.CO_BAN_THAI_SAN, Constants.SO_TIET.CO_BAN_THAI_SAN);
     }
 
     public void loadData() {
@@ -143,6 +166,9 @@ public class GiangVienController {
         giangVien.setMucTtChuan(getMucTTChuan(giangVien.getLuongThucNhan()));
         GiangVien gv = new GiangVien(giangVien);
         giangVienService.save(gv);
+        if (giangVien.getId() == null) { //Them moi giang vien phai them moi TongHop
+            createTongHop(gv);
+        }
         redirect.addFlashAttribute("success", "Thành công!!!");
         return "redirect:/giangVien";
     }
@@ -208,5 +234,63 @@ public class GiangVienController {
 
     private Long getMucTTChuan(Long luong) {
         return luong / 176;
+    }
+
+    private void createTongHop(GiangVien gv) {
+        TongHop tongHop = new TongHop();
+        loadMap2();
+        String namHocNay = DateUtil.getNamHoc(DateUtil.now(), 0);
+        tongHop.setObjectId(gv.getId());
+        tongHop.setIdBoMon(gv.getIdBoMon());
+        tongHop.setIdKhoa(boMonService.findById(gv.getIdBoMon()).getIdKhoa());
+        tongHop.setNamHoc(namHocNay);
+
+        //Số tiết giảm trừ
+        Long soTietGiamTru = 0l;
+        String giamTruString = gv.getGiamTru();
+        if (giamTruString != null) {
+            String[] lstGiamTru = giamTruString.split(",");
+            Long dinhMucGG = soTietDMMap2.get(giangVienService.findById(gv.getId()).getDinhMucGG());
+            for (int i = 0; i < lstGiamTru.length; i++) {
+                TbdMienGiam mienGiam = mienGiamService.findById(Long.parseLong(lstGiamTru[i]));
+                if (mienGiam.getSoTietGiam() != null) {
+                    soTietGiamTru += mienGiam.getSoTietGiam();
+                }
+                if (mienGiam.getTyLe() != null) {
+                    soTietGiamTru += Math.round(dinhMucGG * mienGiam.getTyLe() / 100);
+                }
+                if (soTietGiamTru >= Math.round(dinhMucGG * 0.5)) {
+                    soTietGiamTru = Math.round(dinhMucGG * 0.5);
+                }
+            }
+        }
+        tongHop.setSoTietGiamTru(soTietGiamTru);
+
+        //Số tiết đã thực hiện
+        Long soTietA = giangDayService.getSoTietDaDay(gv.getId(), namHocNay) != null ? giangDayService.getSoTietDaDay(gv.getId(), namHocNay) : 0l;
+        Long soTietB = hdTotNghiepService.getSoTietByObjectId(gv.getId(), namHocNay) != null ? hdTotNghiepService.getSoTietByObjectId(gv.getId(), namHocNay) : 0l;
+        tongHop.setTongSoTiet(soTietA + soTietB);
+
+        //Số tiết phải giảng
+        Long soTietPhaiGiang = soTietDMMap2.get(gv.getDinhMucGG());
+        tongHop.setSoTietPhaiGiang(soTietPhaiGiang);
+
+        //Số giờ chưa hoàn thành NCKH (Tính tiết)
+        Long soTietChuaNCKH = Constants.SO_TIET.SO_TIET_NCKH;
+        List<TbdNckh> lstNckhs = nckhService.findByObjectId(gv.getId(), namHocNay);
+        if (null != lstNckhs && !lstNckhs.isEmpty()) {
+            TbdNckh nckh = lstNckhs.get(0);
+            if (nckh != null) {
+                soTietChuaNCKH = nckh.getSoTietChuaThucHien();
+            }
+        } 
+
+        tongHop.setSoTietChuaHTNCKH(soTietChuaNCKH);
+
+        //Tổng số tiết vượt giờ
+        Long soTietVuotGio = soTietA + soTietB - soTietPhaiGiang - soTietChuaNCKH + soTietGiamTru;
+        tongHop.setSoTietThanhToan(soTietVuotGio >= 0 ? soTietVuotGio : 0);
+
+        tongHopService.save(tongHop);
     }
 }

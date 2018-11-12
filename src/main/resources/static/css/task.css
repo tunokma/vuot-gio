@@ -33,8 +33,7 @@ body {
 
 input[type="text"].form-control,
 input[type="search"].form-control {
-    border: none;
-    border-bottom: 1px dotted #CFCFCF;
+    border: 1px solid #CFCFCF;
 }
 
 textarea {
